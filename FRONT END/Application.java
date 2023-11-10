@@ -13,23 +13,36 @@ public class Application {
     public static JFrame frame;
     public static Window currentWindow;
     public static Window[] windowList = new Window[windowCount];
+    public static int displayHeight;
+    public static int displayWidth;
+
     public static void main(String[] args) {
         frame = new JFrame("Rubik's Cube App");
         initializeFrame(frame);
 
-        windowList[0] = new Window("Window1", 400, 200);
-        windowList[1] = new Window("Window2", 400, 200);
+        windowList[0] = new Window("Window1", displayHeight, displayWidth);
+        windowList[1] = new Window("Window2", displayHeight, displayWidth);
         windowList[0].getWindow().setBackground(Color.blue);
         windowList[1].getWindow().setBackground(Color.yellow);
 
+
         
-        changeWindow("Window1");
+        String[] textWindowText = new String[] {"hello world"};
+        String[] textWindowText2 = new String[] {"goodbye world"};
+        TextDisplay textWindow = new TextDisplay("TextDisplay", "mainTextDisplay", 200, 200, 100, 100, 1, textWindowText, FontList.getStandardFont());
+        TextDisplay textWindow2 = new TextDisplay("TextDisplay", "mainTextDisplay", 250, 250, 100, 100, 2, textWindowText2, FontList.getStandardFont());
+        
+        changeWindow("Window2");
+        windowList[1].add(textWindow);
+        windowList[1].add(textWindow2);
         
     } 
 
     public static void initializeFrame(JFrame frame) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(screenSize.width, screenSize.height);
+        displayHeight = screenSize.height;
+        displayWidth = screenSize.width;
+        frame.setSize(displayWidth, displayHeight);
         frame.setVisible(true);//making the frame visible  
     }
 
@@ -44,8 +57,14 @@ public class Application {
             }
         }
 
-        frame.getContentPane().removeAll();
+        refresh();
         frame.add(bufferWindow.getWindow());
+        frame.validate();
+        currentWindow = bufferWindow;
+    }
+
+    public static void refresh() {
+        frame.getContentPane().removeAll();
         frame.validate();
     }
 

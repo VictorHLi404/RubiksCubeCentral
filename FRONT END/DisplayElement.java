@@ -15,6 +15,42 @@ public class DisplayElement {
     protected int width;
     protected int depth;
 
+    public JComponent getComponent() {
+        return component;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getxPosition() {
+        return xPosition;
+    }
+
+    public int getyPosition() {
+        return yPosition;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
     protected boolean isVisible;
 
     public DisplayElement(String type, String id, int xPosition, int yPosition, int height, int width, int depth) {
@@ -25,11 +61,11 @@ public class DisplayElement {
         this.height = height;
         this.width = width;
         this.depth = depth;
-
-        makeVisible();
     }
 
     public void display() {
+            component.setBounds(xPosition, yPosition, width, height);
+            component.validate();
             component.setVisible(isVisible);
     }
 
@@ -42,7 +78,6 @@ public class DisplayElement {
         isVisible = false;
         display();
     }
-
 }
 
 class TextDisplay extends DisplayElement {
@@ -53,6 +88,8 @@ class TextDisplay extends DisplayElement {
         this.textSource = textSource;
         this.font = font;
         this.component = new JTextArea(textSource[0]);
+        makeVisible();
     }
 
 }
+
