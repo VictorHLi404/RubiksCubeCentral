@@ -1,6 +1,12 @@
 import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 public class DisplayElement {
@@ -14,38 +20,6 @@ public class DisplayElement {
     protected int height;
     protected int width;
     protected int depth;
-
-    public JComponent getComponent() {
-        return component;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public int getxPosition() {
-        return xPosition;
-    }
-
-    public int getyPosition() {
-        return yPosition;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getDepth() {
-        return depth;
-    }
 
     public boolean isVisible() {
         return isVisible;
@@ -78,6 +52,38 @@ public class DisplayElement {
         isVisible = false;
         display();
     }
+    
+    public JComponent getComponent() {
+        return component;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getxPosition() {
+        return xPosition;
+    }
+
+    public int getyPosition() {
+        return yPosition;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
 }
 
 class TextDisplay extends DisplayElement {
@@ -93,3 +99,13 @@ class TextDisplay extends DisplayElement {
 
 }
 
+class ImageContainer extends DisplayElement {
+    protected JLabel image;
+
+    public ImageContainer(String type, String id, int xPosition, int yPosition, int height, int width, int depth, String filePath) throws IOException {
+        super(type, id, xPosition, yPosition, height, width, depth);
+        BufferedImage temp = ImageIO.read(new File(filePath));
+        image = new JLabel(new ImageIcon(temp));
+    }
+
+}
