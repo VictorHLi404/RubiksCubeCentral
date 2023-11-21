@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 
 public class Application {
@@ -16,7 +17,7 @@ public class Application {
     public static int displayHeight;
     public static int displayWidth;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         frame = new JFrame("Rubik's Cube App");
         initializeFrame(frame);
 
@@ -29,12 +30,14 @@ public class Application {
         
         String[] textWindowText = new String[] {"hello world"};
         String[] textWindowText2 = new String[] {"goodbye world"};
-        TextDisplay textWindow = new TextDisplay("TextDisplay", "mainTextDisplay", 200, 200, 100, 100, 1, textWindowText, FontList.getStandardFont());
+        TextDisplay textWindow = new TextDisplay("TextDisplay", "mainTextDisplay", 600, 600, 100, 100, 1, textWindowText, FontList.getStandardFont());
         TextDisplay textWindow2 = new TextDisplay("TextDisplay", "mainTextDisplay", 250, 250, 100, 100, 2, textWindowText2, FontList.getStandardFont());
         
+        ImageContainer image = new ImageContainer("strawberry", "strawberry", 200, 200, 100, 100, 1, "strawberry.jpg");
         changeWindow("Window2");
         windowList[1].add(textWindow);
         windowList[1].add(textWindow2);
+        windowList[1].add(image);
         
     } 
 

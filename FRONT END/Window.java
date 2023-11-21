@@ -5,10 +5,8 @@ public class Window {
     protected String windowID;
     protected int height; 
     protected int width;
-
     protected DisplayElement[] elementList = new DisplayElement[128];
     protected int elementListSize = 0;
-
     public Window() {
         window = new JPanel();
         window.setLayout(null);
@@ -20,15 +18,12 @@ public class Window {
         width = _width;
         window.setBounds(0, 0, height, width);
     }
-
     public JPanel getWindow() {
         return window;
     }
-
     public String getwindowID() {
         return windowID;
     }
-
     public void add(DisplayElement element) {
         window.add(element.getComponent());
         window.revalidate();
