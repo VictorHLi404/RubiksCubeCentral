@@ -6,6 +6,7 @@ public class Window {
     protected int height; 
     protected int width;
     protected DisplayElement[] elementList = new DisplayElement[128];
+
     protected int elementListSize = 0;
 
     public Window() {
@@ -36,5 +37,13 @@ public class Window {
         elementList[elementListSize] = element;
         elementListSize++;
         window.repaint();
+    }
+
+    public DisplayElement[] getElementList() {
+        return elementList;
+    }
+
+    public int getElementListSize() {
+        return elementListSize;
     }
 }

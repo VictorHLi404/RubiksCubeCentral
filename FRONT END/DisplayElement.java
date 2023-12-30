@@ -21,6 +21,7 @@ public class DisplayElement {
     protected int depth;
 
     protected Color background = Color.WHITE;
+    public static Color standardBackgroundColor = Color.getHSBColor((float) 0.608, (float) 0.39, (float) 0.99);
 
     public boolean isVisible() {
         return isVisible;
@@ -89,6 +90,32 @@ public class DisplayElement {
     public void setBackground(Color background) {
         this.background = background;
     }  
+
+    public static Color StringToColor(String color) { //TODO make in less monkey way
+        if (color == null) {
+            return Color.GRAY;
+        }
+        else if (color.equals("ORANGE")) {
+            return Color.ORANGE;
+        }
+        else if (color.equals("RED")) {
+            return Color.RED;
+        }
+        else if (color.equals("YELLOW")) {
+            return Color.YELLOW;
+        }
+        else if (color.equals("WHITE")) {
+            return Color.WHITE;
+        }
+        else if (color.equals("GREEN")) {
+            return Color.GREEN;
+        }
+        else if (color.equals("BLUE")) {
+            return Color.BLUE;
+        }
+        System.out.println("COLOR INPUT NOT VALID");
+        return null;
+    }
 }
 
 class TextDisplay extends DisplayElement {
@@ -169,6 +196,7 @@ class Button extends InteractableTextField {
     public Button(String id, int xPosition, int yPosition, int height, int width, int depth, Color background, ActionListener actionListener,
             String[] textSource, Font font) {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+
         this.type = "Button";
         this.button = new JButton(textSource[0]);
         button.setBackground(background);
@@ -177,6 +205,10 @@ class Button extends InteractableTextField {
         this.component = button;
         makeVisible();
         //TODO Auto-generated constructor stub
+    }
+
+    public JButton getButton() {
+        return button;
     }
 }
 
@@ -203,5 +235,43 @@ class QuitButton extends Button {
         button.setActionCommand("QUIT");
         makeVisible();
     }
-    
+
+}
+
+class ColorSwatch extends Button {
+    protected String color;
+    public ColorSwatch(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+            ActionListener actionListener, String[] textSource, Font font, String color) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.color = color;
+        this.type = "ColorSwatch";
+        this.background = DisplayElement.StringToColor(color);
+        button.setActionCommand("SWITCH CURRENT COLOR TO " + color);
+        button.setBackground(this.background);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        makeVisible();
+    }
+}
+
+class BlockFace extends Button {
+    protected String color;
+
+    public BlockFace(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+            ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "BlockFace";
+        this.color = null;
+        this.background = DisplayElement.StringToColor(color);
+        button.setBackground(this.background);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        button.setActionCommand("CHANGE CURRENT COLOR OF BLOCKFACE");
+        makeVisible();
+    }
+
+    public void updateColor(String color) {
+        this.color = color;
+        this.background = DisplayElement.StringToColor(color);
+        button.setBackground(this.background);
+    }
+
 }
