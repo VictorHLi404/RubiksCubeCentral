@@ -50,20 +50,63 @@ public class Application implements ActionListener {
 
         windowList[1].add(new TextDisplay("titleText", 50, 50, 100, 1025, 1, standardBackgroundColor, new String[] {"RUBIKS CUBE SOLVER"}, FontList.titleFont));
         windowList[1].add(new TextDisplay("explanationText", 50, 160, 100, 1500, 1, standardBackgroundColor, new String[] {"Construct your current scramble by clicking on a color, and then clicking on the respective square where it is on the cube.\nEnsure that the cube you construct is in a valid state, otherwise the program will not work."}, FontList.standardFont));
-
         windowList[1].add(new ColorSwatch("redColorSwatch", 50, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "RED"));
         windowList[1].add(new ColorSwatch("greenColorSwatch", 360, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "GREEN"));
         windowList[1].add(new ColorSwatch("yellowColorSwatch", 670, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "YELLOW"));
         windowList[1].add(new ColorSwatch("whiteColorSwatch", 980, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "WHITE"));
         windowList[1].add(new ColorSwatch("orangeColorSwatch", 1290, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "ORANGE"));
         windowList[1].add(new ColorSwatch("blueColorSwatch", 1600, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "BLUE"));
+        
+        buildCubeFace(windowList[1], new String[] {"OCenter", "OBEdge", "OGEdge", "OWEdge", "OYEdge",
+    "OBWCorner", "OGWCorner", "OBYCorner", "OGYCorner"}, "ORANGE", 720, 650, 60, 60);
 
-        windowList[1].add(new BlockFace("centerTest", 50, 500, 60, 60, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        buildCubeFace(windowList[1], new String[] {"GCenter", "GOEdge", "GREdge", "GWEdge", "GYEdge",
+    "GOWCorner", "GRWCorner", "GOYCorner", "GRYCorner"}, "GREEN", 900, 650, 60, 60);
+
+        buildCubeFace(windowList[1], new String[] {"RCenter", "RGEdge", "RBEdge", "RWEdge", "RYEdge",
+    "RGWCorner", "RBWCorner", "RGYCorner", "RBYCorner"}, "RED", 1080, 650, 60, 60);
+
+        buildCubeFace(windowList[1], new String[] {"BCenter", "BREdge", "BOEdge", "BWEdge", "BYEdge",
+    "BRWCorner", "BOWCorner", "BRYCorner", "BOYCorner"}, "BLUE", 1260, 650, 60, 60);
+
+        buildCubeFace(windowList[1], new String[] {"WCenter", "WOEdge", "WREdge", "WBEdge", "WGEdge",
+    "WOBCorner", "WRBCorner", "WOGCorner", "WRGCorner"}, "WHITE", 900, 470, 60, 60);
+
+        buildCubeFace(windowList[1], new String[] {"YCenter", "YOEdge", "YREdge", "YGEdge", "YBEdge",
+    "YOGCorner", "YRGCorner", "YOBCorner", "YRBCorner"}, "YELLOW", 900, 830, 60, 60);
+        /*
+        windowList[1].add(new NonEditableBlockFace("BlueCenter", 1000, 600, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "BLUE"));
+        
+        windowList[1].add(new BlockFace("blueYellowEdge", 950, 600, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueWhiteEdge", 1050, 600, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueOrangeEdge", 1000, 550, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueRedEdge", 1000, 650, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+
+        windowList[1].add(new BlockFace("blueYellowRedEdge", 950, 650, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueRedWhiteEdge", 1050, 650, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueYellowOrangeEdge", 950, 550, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+        windowList[1].add(new BlockFace("blueOrangeYellowEdge", 1050, 550, 50, 50, 1, standardBackgroundColor, this, blankString, FontList.titleFont));
+*/
+        
         windowList[1].add(new WindowChangeButton("goToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
 
         changeWindow("Title Window");
         loadObjectDatabase();
     } 
+
+    public void buildCubeFace(Window window, String[] id, String initialColor, int centerXCoord, int centerYCoord, int height, int width) {
+        window.add(new NonEditableBlockFace(id[0], centerXCoord, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont, initialColor));
+        
+        window.add(new BlockFace(id[1], centerXCoord-width, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT
+        window.add(new BlockFace(id[2], centerXCoord+width, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT
+        window.add(new BlockFace(id[3], centerXCoord, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // UP
+        window.add(new BlockFace(id[4], centerXCoord, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // DOWN
+
+        window.add(new BlockFace(id[5], centerXCoord-width, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT UP
+        window.add(new BlockFace(id[6], centerXCoord+width, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT UP
+        window.add(new BlockFace(id[7], centerXCoord-width, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT DOWN
+        window.add(new BlockFace(id[8], centerXCoord+width, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT DOWN
+    }
 
     public static void loadObjectDatabase() {
         for (int i = 0; i < windowCount; i++) {
@@ -138,10 +181,14 @@ public class Application implements ActionListener {
                     BlockFace currentBlockFace = (BlockFace) currentElement;
                     if (currentBlockFace.getButton().equals(sourceObject)) {
                         currentBlockFace.updateColor(currentColor);
+                        System.out.println(currentBlockFace.getId());
                         break;
                     }
                 }
             }
+        }
+        else if (command.contains("DO NOT CHANGE CURRENT COLOR OF BLOCKFACE")) {
+            return;
         }
     }
 }

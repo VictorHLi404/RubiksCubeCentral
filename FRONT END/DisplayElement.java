@@ -263,7 +263,7 @@ class BlockFace extends Button {
         this.color = null;
         this.background = DisplayElement.StringToColor(color);
         button.setBackground(this.background);
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         button.setActionCommand("CHANGE CURRENT COLOR OF BLOCKFACE");
         makeVisible();
     }
@@ -273,5 +273,17 @@ class BlockFace extends Button {
         this.background = DisplayElement.StringToColor(color);
         button.setBackground(this.background);
     }
+}
 
+class NonEditableBlockFace extends BlockFace {
+
+    public NonEditableBlockFace(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+            ActionListener actionListener, String[] textSource, Font font, String color) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "NonEditableBlockFace";
+        this.color = color;
+        this.background = DisplayElement.StringToColor(color);
+        button.setBackground(this.background);
+        button.setActionCommand("DO NOT CHANGE CURRENT COLOR OF BLOCKFACE");
+    }
 }
