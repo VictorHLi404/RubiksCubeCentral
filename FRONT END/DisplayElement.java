@@ -1,13 +1,14 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 public class DisplayElement {
     protected JComponent component;
 
@@ -142,6 +143,18 @@ class TextDisplay extends DisplayElement {
     public Font getFont() {
         return font;
     }
+
+    public void updateTextDisplay(String newText) {
+        this.textSource[0] = newText;
+        this.textArea.setText(newText);
+        makeVisible();
+    }
+
+    @Override
+    public String toString() {
+        return "TextDisplay [textArea=" + textArea + ", textSource=" + Arrays.toString(textSource) + ", font=" + font
+                + "]";
+    }
 }
 
 class ImageContainer extends DisplayElement {
@@ -169,7 +182,6 @@ class InteractableObject extends DisplayElement {
         super(id, xPosition, yPosition, height, width, depth, background);
         this.type = "InteractableObject";
         this.actionListener = actionListener;
-        //TODO Auto-generated constructor stub
     }
 
 }
@@ -204,7 +216,6 @@ class Button extends InteractableTextField {
         button.addActionListener(actionListener);
         this.component = button;
         makeVisible();
-        //TODO Auto-generated constructor stub
     }
 
     public JButton getButton() {
@@ -226,6 +237,27 @@ class WindowChangeButton extends Button {
 
 }
 
+class ScrambleViewButton extends WindowChangeButton {
+    protected String scramble;
+
+    public ScrambleViewButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font, String targetWindow, String scramble) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font, targetWindow);
+        this.type = "ScrambleViewButton";
+        this.scramble = scramble;
+        button.setActionCommand("LOAD SCRAMBLE VIEW WITH SCRAMBLE " + scramble);
+        makeVisible();
+    }
+
+    public String getScramble() {
+        return scramble;
+    }
+
+    public void setScramble(String scramble) {
+        this.scramble = scramble;
+    }
+}
+
 class QuitButton extends Button {
 
     public QuitButton(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
@@ -238,52 +270,3 @@ class QuitButton extends Button {
 
 }
 
-class ColorSwatch extends Button {
-    protected String color;
-    public ColorSwatch(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
-            ActionListener actionListener, String[] textSource, Font font, String color) {
-        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
-        this.color = color;
-        this.type = "ColorSwatch";
-        this.background = DisplayElement.StringToColor(color);
-        button.setActionCommand("SWITCH CURRENT COLOR TO " + color);
-        button.setBackground(this.background);
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-        makeVisible();
-    }
-}
-
-class BlockFace extends Button {
-    protected String color;
-
-    public BlockFace(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
-            ActionListener actionListener, String[] textSource, Font font) {
-        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
-        this.type = "BlockFace";
-        this.color = null;
-        this.background = DisplayElement.StringToColor(color);
-        button.setBackground(this.background);
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        button.setActionCommand("CHANGE CURRENT COLOR OF BLOCKFACE");
-        makeVisible();
-    }
-
-    public void updateColor(String color) {
-        this.color = color;
-        this.background = DisplayElement.StringToColor(color);
-        button.setBackground(this.background);
-    }
-}
-
-class NonEditableBlockFace extends BlockFace {
-
-    public NonEditableBlockFace(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
-            ActionListener actionListener, String[] textSource, Font font, String color) {
-        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
-        this.type = "NonEditableBlockFace";
-        this.color = color;
-        this.background = DisplayElement.StringToColor(color);
-        button.setBackground(this.background);
-        button.setActionCommand("DO NOT CHANGE CURRENT COLOR OF BLOCKFACE");
-    }
-}
