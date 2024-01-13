@@ -8,8 +8,11 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.*;
 
 public class DisplayElement {
+
+    public static final boolean onMac = true;
     protected JComponent component;
 
     protected String type;
@@ -41,10 +44,25 @@ public class DisplayElement {
     }
 
     public void display() {
-            component.setBounds(xPosition, yPosition, width, height);
+            if (onMac) {
+                component.setBounds(resizeHorizontal(xPosition, 1440), resizeVertical(yPosition, 900), resizeHorizontal(width, 1440), resizeVertical(height, 900));
+            }
+            else {
+                component.setBounds(xPosition, yPosition, width, height);
+            }
             component.validate();
             component.setVisible(isVisible);
     }
+
+    public int resizeHorizontal(double initial, double frameSize) { // RESIZE ACCORDING TO 1920 
+        double ratio = initial/1920;
+        return (int) (ratio*frameSize);
+    }
+
+    public int resizeVertical(double initial, double frameSize) { // RESIZE ACCORDING TO 1080
+        double ratio = initial/1080;
+        return (int) (ratio*frameSize);
+    } 
 
     public void makeVisible() {
         isVisible = true;
@@ -96,26 +114,23 @@ public class DisplayElement {
         if (color == null) {
             return Color.GRAY;
         }
-        else if (color.equals("ORANGE")) {
-            return Color.ORANGE;
+        switch (color) {
+            case "WHITE":
+                return Color.WHITE;
+            case "RED":
+                return Color.RED;
+            case "GREEN":
+                return Color.GREEN;
+            case "YELLOW":
+                return Color.YELLOW;
+            case "ORANGE":
+                return Color.ORANGE;
+            case "BLUE":
+                return Color.BLUE;
+            default:
+                System.out.println("COLOR INPUT NOT VALID");
+                return Color.GRAY;
         }
-        else if (color.equals("RED")) {
-            return Color.RED;
-        }
-        else if (color.equals("YELLOW")) {
-            return Color.YELLOW;
-        }
-        else if (color.equals("WHITE")) {
-            return Color.WHITE;
-        }
-        else if (color.equals("GREEN")) {
-            return Color.GREEN;
-        }
-        else if (color.equals("BLUE")) {
-            return Color.BLUE;
-        }
-        System.out.println("COLOR INPUT NOT VALID");
-        return null;
     }
 }
 
@@ -155,6 +170,51 @@ class TextDisplay extends DisplayElement {
         return "TextDisplay [textArea=" + textArea + ", textSource=" + Arrays.toString(textSource) + ", font=" + font
                 + "]";
     }
+}
+
+class TextFieldLimiter extends PlainDocument {
+    protected int charLimit;
+
+    public TextFieldLimiter(int charLimit) {
+        super();
+        this.charLimit = charLimit;
+    }
+
+   public void insertString(int offset, String input, AttributeSet attributeSet) throws BadLocationException {
+      if (input == null)
+         return;
+      if ((getLength() + input.length()) <= charLimit) { // if existing text field length + new input textfield length  less than max, allow insertion
+        super.insertString(offset, input, attributeSet);
+      }
+      else {
+      }
+   }
+}
+
+class EditableTextDisplay extends TextDisplay {
+
+    protected int rows;
+    protected int columns;
+    public EditableTextDisplay(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, String[] textSource, Font font, int rows, int columns) {
+        super(id, xPosition, yPosition, height, width, depth, background, textSource, font);
+        this.textArea.setEditable(true);
+        this.textArea.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        this.rows = rows;
+        this.columns = columns;
+        this.textArea.setRows(rows);
+        this.textArea.setColumns(columns);
+        this.textArea.setLineWrap(true);
+
+        this.textArea.setDocument(new TextFieldLimiter(rows*columns));
+        this.textArea.setText(textSource[0]);
+        makeVisible();
+    }
+
+    public String getText() {
+        return textArea.getText();
+    }
+
 }
 
 class ImageContainer extends DisplayElement {
@@ -266,6 +326,29 @@ class QuitButton extends Button {
         this.type = "QuitButton";
         button.setActionCommand("QUIT");
         makeVisible();
+    }
+
+}
+
+class uploadNetButton extends Button {
+
+    public uploadNetButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "uploadNetButton";
+        button.setActionCommand("UPLOAD NET");
+    }
+
+}
+
+class uploadRunButton extends Button {
+
+    public uploadRunButton(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+            ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "uploadRunButton";
+        button.setActionCommand("UPLOAD RUN");
+        //TODO Auto-generated constructor stub
     }
 
 }

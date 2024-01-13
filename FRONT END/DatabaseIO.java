@@ -1,15 +1,18 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class DatabaseIO {
 
     private static final String solveFile = "lib/solves.csv";
     private static BufferedReader csvReader;
+    private static FileWriter csvWriter;
+    private static int databaseMaxSize = 100;
 
     public static CubeSolve[] loadSolves() throws IOException {
         csvReader = new BufferedReader(new FileReader(solveFile));
-        CubeSolve[] solveList = new CubeSolve[9999];
+        CubeSolve[] solveList = new CubeSolve[databaseMaxSize];
         String rowData = "";
         rowData = csvReader.readLine();
         rowData = csvReader.readLine(); // buffer the first line which only contains the names of the variables
@@ -23,10 +26,43 @@ public class DatabaseIO {
         csvReader = null;
         return solveList;
     }
+
+    public static void saveSolves(DatabaseView database) throws IOException {
+        CubeSolve[] solveList = database.getSolveList();
+        csvWriter = new FileWriter(solveFile);
+        csvWriter.write("time,date,scramble\n");
+        for (int i = 0; i < database.solveListSize; i++) {
+            csvWriter.write(solveList[i].convertToCSV() + "\n");
+        }
+        csvWriter.close();
+        System.out.println("Runs have been saved successfully!");
+
+    }
 }
 
+
+/*
+ *     public static void saveBookList(HashMap<Integer, Book> masterList) throws IOException {
+        csvWriter = new FileWriter(bookFile);
+        csvWriter.write("bookID,title,author,availableCopies\n");
+        masterList.forEach((key,Book) -> {
+            try {
+                csvWriter.write(Book.convertToCSV());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        csvWriter.close();
+        System.out.println("Book database has been saved!");
+    }
+ */
 class DatabaseView {
     protected CubeSolve[] solveList;
+
+    protected int solveListSize;
+
+    protected String currentSolveSort;
+
     protected final int displayPageLength = 5;
     protected CubeSolve[] currentPage;
 
@@ -35,6 +71,14 @@ class DatabaseView {
     
     public DatabaseView(CubeSolve[] solveList) {
         this.solveList = solveList;
+        int index = 0;
+        while (solveList[index] != null) {
+            index++;
+        }
+        solveListSize = index;
+        // default sort by time
+        this.currentSolveSort = "TIME";
+        sortByTime();
         currentPage = new CubeSolve[displayPageLength];
         for (int i = 0; i < displayPageLength; i++) {
             currentPage[i] = solveList[i];
@@ -52,9 +96,32 @@ class DatabaseView {
         for (int i = 0; i < displayPageLength; i++) {
             String index = String.valueOf(currentIndex+1+i);
             currentPageInfo[i] = index + " " + currentPage[i];
-            System.out.println(currentPageInfo[i]);
         }
         return currentPageInfo;
+    }
+
+    public void sortByDate() {
+        //TODO SHUFFLE LIST TO SORT BY DATE
+    }
+
+    public void sortByTime() {
+        //TODO SHUFFLE LIST TO SORT BY TIME
+    }
+
+    public void addToList(String solvetime, String date, String scramble) {
+        CubeSolve newEntry = new CubeSolve(solvetime, date, scramble);
+        solveList[solveListSize] = newEntry;
+        solveListSize++;
+        if (currentSolveSort.equals("TIME")) {
+            sortByTime();
+        }
+        else if (currentSolveSort.equals("DATE")) {
+            sortByDate();
+        }
+        loadPage(currentIndex);
+    }
+    public CubeSolve[] getSolveList() {
+        return solveList;
     }
 }
 
@@ -90,5 +157,9 @@ class CubeSolve {
     @Override
     public String toString() {
         return solveTime + "  " + date;
+    }
+
+    public String convertToCSV() {
+        return solveTime + "," + date + "," + scramble;
     }
 }

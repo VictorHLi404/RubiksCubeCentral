@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.xml.crypto.Data;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,10 +11,9 @@ import java.util.HashMap;
 public class Application implements ActionListener {
     /*
      * STUFF TO DO
-     * TODO automatic element resizing for different monitor sizes with dimension
      * 
      */
-    public static int windowCount = 4;
+    public static final int windowCount = 6;
 
     public static JFrame frame;
     public static Window currentWindow;
@@ -21,13 +22,15 @@ public class Application implements ActionListener {
     public static int displayWidth;
 
     public static Color standardBackgroundColor = Color.getHSBColor((float) 0.608, (float) 0.39, (float) 0.99);
+    
     public static HashMap<String, Object> objectDatabase = new HashMap<String, Object>();
 
     public static String[] blankString = {""};
 
     public static String currentColor = null;
-
-    public static String currentScrambleView = null;
+    
+    public static RubiksCubeNet currentSolveScrambleBuild = null;
+    public static RubiksCubeNet currentScrambleView = null;
 
     public static DatabaseView solveDatabase;
     // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,8 +47,9 @@ public class Application implements ActionListener {
         windowList[0].add(new TextDisplay("subtitleText", 675, 240, 100, 525, 1, standardBackgroundColor, new String[] {"By Victor Li and Su Nguyen"}, FontList.subtitleFont));
         windowList[0].add(new WindowChangeButton("titleGoToSolver", 675, 350, 100, 525, 1, Color.WHITE, this, new String[] {"CUBE SOLVER"}, FontList.subtitleFont, "Solver Window"));
         windowList[0].add(new WindowChangeButton("titleGoToDatabase", 675, 460, 100, 525, 1, Color.WHITE, this, new String[] {"DATABASE"}, FontList.subtitleFont, "Database Window"));
-        windowList[0].add(new WindowChangeButton("titleGoToTimer", 675, 570, 100, 525, 1, Color.WHITE, this, new String[] {"TIMER"}, FontList.subtitleFont, "Timer Window"));
-        windowList[0].add(new QuitButton("titleQuitApp", 675, 680, 100, 525, 1, Color.WHITE, this, new String[] {"QUIT"}, FontList.subtitleFont));
+        windowList[0].add(new WindowChangeButton("titleGoToScrambler", 675, 570, 100, 525, 1, Color.WHITE, this, new String[] {"SCRAMBLER"}, FontList.subtitleFont, "Scrambler Window"));
+        windowList[0].add(new WindowChangeButton("titleGoToTimer", 675, 680, 100, 525, 1, Color.WHITE, this, new String[] {"TIMER"}, FontList.subtitleFont, "Timer Window"));
+        windowList[0].add(new QuitButton("titleQuitApp", 675, 790, 100, 525, 1, Color.WHITE, this, new String[] {"QUIT"}, FontList.subtitleFont));
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,7 +57,7 @@ public class Application implements ActionListener {
         windowList[1].getWindow().setBackground(standardBackgroundColor);
 
         windowList[1].add(new TextDisplay("titleText", 50, 50, 100, 1025, 1, standardBackgroundColor, new String[] {"RUBIKS CUBE SOLVER"}, FontList.titleFont));
-        windowList[1].add(new TextDisplay("explanationText", 50, 160, 100, 1500, 1, standardBackgroundColor, new String[] {"Construct your current scramble by clicking on a color, and then clicking on the respective square where it is on the cube.\nEnsure that the cube you construct is in a valid state, otherwise the program will not work."}, FontList.standardFont));
+        windowList[1].add(new TextDisplay("explanationText", 50, 160, 100, 1500, 1, standardBackgroundColor, new String[] {"Construct your current scramble by clicking on a color, and then clicking on the respective square where it is on the cube.\nWhen looking at the cube, make sure the white center piece is on top, the yellow on the bottom,\nthe green facing you, and the orange facing the left.\nEnsure that the cube you construct is in a valid state, otherwise the program will not work."}, FontList.standardFont));
         
         windowList[1].add(new ColorSwatch("redColorSwatch", 50, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "RED"));
         windowList[1].add(new ColorSwatch("greenColorSwatch", 360, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "GREEN"));
@@ -62,21 +66,10 @@ public class Application implements ActionListener {
         windowList[1].add(new ColorSwatch("orangeColorSwatch", 1290, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "ORANGE"));
         windowList[1].add(new ColorSwatch("blueColorSwatch", 1600, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "BLUE"));
         
-        buildCubeFace(windowList[1], "ORANGE", new String[] {"OCenter", "OBEdge", "OGEdge", "OWEdge", "OYEdge",
-        "OBWCorner", "OGWCorner", "OBYCorner", "OGYCorner"},  720, 650, 60, 60);
-        buildCubeFace(windowList[1], "GREEN", new String[] {"GCenter", "GOEdge", "GREdge", "GWEdge", "GYEdge",
-        "GOWCorner", "GRWCorner", "GOYCorner", "GRYCorner"},900, 650, 60, 60);
-        buildCubeFace(windowList[1], "RED", new String[] {"RCenter", "RGEdge", "RBEdge", "RWEdge", "RYEdge",
-        "RGWCorner", "RBWCorner", "RGYCorner", "RBYCorner"}, 1080, 650, 60, 60);
-        buildCubeFace(windowList[1],"BLUE", new String[] {"BCenter", "BREdge", "BOEdge", "BWEdge", "BYEdge",
-        "BRWCorner", "BOWCorner", "BRYCorner", "BOYCorner"},  1260, 650, 60, 60);
-        buildCubeFace(windowList[1],"WHITE", new String[] {"WCenter", "WOEdge", "WREdge", "WBEdge", "WGEdge",
-        "WOBCorner", "WRBCorner", "WOGCorner", "WRGCorner"},  900, 470, 60, 60);
-        buildCubeFace(windowList[1], "YELLOW", new String[] {"YCenter", "YOEdge", "YREdge", "YGEdge", "YBEdge",
-        "YOGCorner", "YRGCorner", "YOBCorner", "YRBCorner"},  900, 830, 60, 60);
-        
-        windowList[1].add(new WindowChangeButton("solverGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
+        currentSolveScrambleBuild = new RubiksCubeNet(this, "Solver Window", windowList[1]);
 
+        windowList[1].add(new WindowChangeButton("solverGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
+        windowList[1].add(new uploadNetButton("uploadRubiksNetButton", 1475, 900, 75, 400, 1, Color.WHITE, this, new String[] {"UPLOAD"}, FontList.subtitleFont));
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         windowList[2] = new Window("Timer Window", displayHeight, displayWidth);
@@ -95,6 +88,7 @@ public class Application implements ActionListener {
         windowList[3].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"RUBIKS CUBE RUN DATABASE"}, FontList.titleFont)); 
         windowList[3].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"View your previous runs sorted by most recent or fastest time.\nUpload new runs to the database with the button below."}, FontList.standardFont));
         windowList[3].add(new WindowChangeButton("databaseGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
+        windowList[3].add(new WindowChangeButton("databaseGoToUpload", 1475, 800, 100, 400, 1, Color.WHITE, this, new String[] {"UPLOAD NEW RUN"}, FontList.subtitleFont, "Database Upload Window"));
 
         windowList[3].add(new TextDisplay("#Heading", 50, 300, 50, 30, 1, standardBackgroundColor, new String[] {"#"}, FontList.subtitleFont)); 
         windowList[3].add(new TextDisplay("timeHeading", 170, 300, 50, 100, 1, standardBackgroundColor, new String[] {"TIME"}, FontList.subtitleFont)); 
@@ -116,25 +110,45 @@ public class Application implements ActionListener {
         windowList[3].add(new TextDisplay("averageHeading", 1250, 500, 100, 700, 1, standardBackgroundColor, new String[] {"TIME AVERAGE"}, FontList.titleFont));
         windowList[3].add(new TextDisplay("averageTimeDisplay", 1350, 600, 100, 500, 1, standardBackgroundColor, new String[] {"00:00:000"}, FontList.titleFont)); 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        
+        windowList[4] = new Window("Scramble View Window", displayHeight, displayWidth);
+        windowList[4].getWindow().setBackground(standardBackgroundColor);
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        windowList[5] = new Window("Database Upload Window", displayHeight, displayWidth);
+        windowList[5].getWindow().setBackground(standardBackgroundColor);
+        windowList[5].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"UPLOAD NEW RUN"}, FontList.titleFont)); 
+        windowList[5].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"Fill out the run below with the time, date, and given scramble.\nIf you have a time or scramble currently generated, it will autofill into the fields."}, FontList.standardFont));
+
+        windowList[5].add(new TextDisplay("timeHeading", 150, 300, 100, 200, 1, standardBackgroundColor, new String[] {"TIME"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("minuteInput", 600, 300, 80, 200, 1, Color.WHITE, new String[] {"00"}, FontList.titleFont, 1, 2));
+        windowList[5].add(new TextDisplay("Colon", 825, 300, 100, 25, 1, standardBackgroundColor, new String[] {":"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("secondInput", 875, 300, 80, 200, 1, Color.WHITE, new String[] {"00"}, FontList.titleFont, 1, 2));
+        windowList[5].add(new TextDisplay("Colon", 1100, 300, 100, 25, 1, standardBackgroundColor, new String[] {":"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("millisecondInput", 1150, 300, 80, 250, 1, Color.WHITE, new String[] {"000"}, FontList.titleFont, 1, 3));
+
+        windowList[5].add(new TextDisplay("dateHeading", 150, 450, 100, 400, 1, standardBackgroundColor, new String[] {"DATE"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("dayInput", 600, 450, 80, 200, 1, Color.WHITE, new String[] {"00"}, FontList.titleFont, 1, 2));
+        windowList[5].add(new TextDisplay("Slash", 825, 450, 80, 25, 1, standardBackgroundColor, new String[] {"/"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("monthInput", 875, 450, 80, 200, 1, Color.WHITE, new String[] {"00"}, FontList.titleFont, 1, 2));
+        windowList[5].add(new TextDisplay("Slash", 1100, 450, 80, 25, 1, standardBackgroundColor, new String[] {"/"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("yearInput", 1150, 450, 80, 250, 1, Color.WHITE, new String[] {"0000"}, FontList.titleFont, 1, 4));
+
+        windowList[5].add(new TextDisplay("scrambleHeading", 150, 600, 100, 500, 1, standardBackgroundColor, new String[] {"SCRAMBLE"}, FontList.titleFont));
+        windowList[5].add(new EditableTextDisplay("moveInput", 800, 600, 80, 600, 1, Color.WHITE, new String[] {"Format like L, R\', B2"}, FontList.standardFont, 3, 30));
+
+        windowList[5].add(new uploadRunButton("runUploadButton", 425, 750, 150, 700, 1, Color.WHITE, this, new String[] {"UPLOAD"}, FontList.subtitleFont));
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         solveDatabase = new DatabaseView(DatabaseIO.loadSolves());
         loadObjectDatabase();
-        loadPage();
+
+        currentSolveScrambleBuild.loadCublets(objectDatabase);
+
+        loadDatabasePage();
         changeWindow("Title Window");
     } 
-
-    public void buildCubeFace(Window window, String initialColor, String[] id, int centerXCoord, int centerYCoord, int height, int width) {
-        window.add(new NonEditableBlockFace(id[0], centerXCoord, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont, initialColor));
-        
-        window.add(new BlockFace(id[1], centerXCoord-width, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT
-        window.add(new BlockFace(id[2], centerXCoord+width, centerYCoord, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT
-        window.add(new BlockFace(id[3], centerXCoord, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // UP
-        window.add(new BlockFace(id[4], centerXCoord, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // DOWN
-
-        window.add(new BlockFace(id[5], centerXCoord-width, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT UP
-        window.add(new BlockFace(id[6], centerXCoord+width, centerYCoord-height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT UP
-        window.add(new BlockFace(id[7], centerXCoord-width, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // LEFT DOWN
-        window.add(new BlockFace(id[8], centerXCoord+width, centerYCoord+height, height, width, 1, standardBackgroundColor, this, blankString, FontList.titleFont)); // RIGHT DOWN
-    }
     
     public static void initializeFrame(JFrame frame) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -158,7 +172,7 @@ public class Application implements ActionListener {
         }
     }
 
-    public static void loadPage() {
+    public static void loadDatabasePage() {
         String[] pageData = solveDatabase.getCurrentPage();
         for (int i = 1; i <= 5; i++) {
             String id = "slot" + String.valueOf(i) + "DataDisplay";
@@ -196,15 +210,23 @@ public class Application implements ActionListener {
             command = command.replace("CHANGE WINDOW ", "");
             changeWindow(command);
         }
+
         else if (command.contains("QUIT")) {
-            // TODO implement saving protocol for databases n shit
+            try {
+                DatabaseIO.saveSolves(solveDatabase);
+            } catch (IOException e1) {
+                System.out.println("SAVING NOT SUCCESSFUL");
+                e1.printStackTrace();
+            }
             System.exit(0);
         }
+
         else if (command.contains("SWITCH CURRENT COLOR TO ")) {
             command = command.replace("SWITCH CURRENT COLOR TO ", "");
             currentColor = command;
             System.out.println("CURRENT COLOR IS " + currentColor);
         }
+        
         else if (command.contains("CHANGE CURRENT COLOR OF BLOCKFACE")) { // assuming currently on Solver Window
             DisplayElement[] elementList = currentWindow.getElementList();
             Object sourceObject = e.getSource();
@@ -222,12 +244,47 @@ public class Application implements ActionListener {
                 }
             }
         }
+
         else if (command.contains("DO NOT CHANGE CURRENT COLOR OF BLOCKFACE")) {
             return;
         }
+
+        else if (command.contains("UPLOAD NET")) {
+            //TODO INTEGRATE WITH BACKEND AND VALIDATION
+            currentSolveScrambleBuild.toDataString();
+            currentSolveScrambleBuild.printOutCube();
+        }
+
         else if (command.contains("STOP TIMER")) {
             TimerButton button = (TimerButton) objectDatabase.get("timerButton");
             button.resetTimer();
+        }
+
+        else if (command.contains("UPLOAD RUN")) {
+            EditableTextDisplay minutes = (EditableTextDisplay) objectDatabase.get("minuteInput");
+            EditableTextDisplay seconds = (EditableTextDisplay) objectDatabase.get("secondInput");
+            EditableTextDisplay milliseconds = (EditableTextDisplay) objectDatabase.get("millisecondInput");
+            String time = minutes.getText() + ":" + seconds.getText() + ":" + milliseconds.getText();
+            //TODO TIME VALIDATION
+            System.out.println("TIME: " + time);
+            EditableTextDisplay day = (EditableTextDisplay) objectDatabase.get("dayInput");
+            EditableTextDisplay month = (EditableTextDisplay) objectDatabase.get("minuteInput");
+            EditableTextDisplay year = (EditableTextDisplay) objectDatabase.get("yearInput");
+            
+            String date = day.getText() + "/" + month.getText() + "/" + year.getText();
+            //TODO DATE VALIDATION
+            System.out.println("DATE: " + date);
+
+            EditableTextDisplay scrambleInput = (EditableTextDisplay) objectDatabase.get("moveInput");
+
+            String scrambleString = scrambleInput.getText();
+            //TODO SCRAMBLE VALIDATION
+
+            //TODO SPACE IN ARRAY VALIDATION
+
+            solveDatabase.addToList(time, date, scrambleString);
+            loadDatabasePage();
+            changeWindow("Database Window");
         }
     }
 }
