@@ -50,6 +50,7 @@ class TimerButton extends Button {
         });
         makeVisible();
     }
+    
     public String millisecondTimeFormatter(long milliseconds) { // IN FORMAT 00:00:000
         long minutes = Math.floorDiv(milliseconds,60000);
         milliseconds-= minutes*60000;
@@ -98,7 +99,7 @@ class ResetTimerButton extends Button {
             ActionListener actionListener, String[] textSource, Font font) {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
         this.type = "ResetTimerButton";
-        button.setActionCommand("STOP TIMER");
+        button.setActionCommand("RESET TIMER");
         makeVisible();
     }
 

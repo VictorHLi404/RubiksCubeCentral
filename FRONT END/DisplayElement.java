@@ -12,7 +12,7 @@ import javax.swing.text.*;
 
 public class DisplayElement {
 
-    public static final boolean onMac = true;
+    public static final boolean onMac = false;
     protected JComponent component;
 
     protected String type;
@@ -148,6 +148,7 @@ class TextDisplay extends DisplayElement {
         this.textArea.setEditable(false);
         this.textArea.setFont(font);
         this.textArea.setBackground(background);
+        this.textArea.setLineWrap(true);
         this.component = textArea;
         makeVisible();
     }
@@ -330,26 +331,67 @@ class QuitButton extends Button {
 
 }
 
-class uploadNetButton extends Button {
+class UploadNetButton extends Button {
 
-    public uploadNetButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+    public UploadNetButton(String id, int xPosition, int yPosition, int height, int width, int depth,
             Color background, ActionListener actionListener, String[] textSource, Font font) {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
-        this.type = "uploadNetButton";
+        this.type = "UploadNetButton";
         button.setActionCommand("UPLOAD NET");
     }
 
 }
 
-class uploadRunButton extends Button {
+class UploadRunButton extends Button {
 
-    public uploadRunButton(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+    public UploadRunButton(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
             ActionListener actionListener, String[] textSource, Font font) {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
-        this.type = "uploadRunButton";
+        this.type = "UploadRunButton";
         button.setActionCommand("UPLOAD RUN");
         //TODO Auto-generated constructor stub
     }
 
+}
+
+class ScrambleGeneratorButton extends Button {
+
+    public ScrambleGeneratorButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "ScrambleGeneratorButton";
+        button.setActionCommand("GENERATE SCRAMBLE");
+    }
+
+}
+
+class ChangeDatabasePageButton extends Button {
+    
+    protected boolean isScrollForward;
+
+    public ChangeDatabasePageButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font, boolean isScrollForward) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "ChangeDatabasePageButton";
+        this.isScrollForward = isScrollForward;
+        if (isScrollForward) {
+            button.setActionCommand("SCROLL DATABASE PAGE FORWARD");
+        }
+        else {
+            button.setActionCommand("SCROLL DATABASE PAGE BACKWARDS");
+        }
+    }
+}
+
+class ChangeDatabaseSortTypeButton extends Button {
+
+    protected String sortType;
+
+    public ChangeDatabaseSortTypeButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font, String sortType) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.sortType = sortType;
+        button.setActionCommand("CHANGE SORT TO " + sortType);
+    }
 }
 

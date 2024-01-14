@@ -1,6 +1,11 @@
+import java.awt.Color;
+
 import javax.swing.*;
 
 public class Window {
+
+    public static Color standardBackgroundColor = Color.getHSBColor((float) 0.608, (float) 0.39, (float) 0.99);
+    
     protected JPanel window;
     protected String windowID;
     protected int height; 
@@ -12,6 +17,8 @@ public class Window {
     public Window() {
         window = new JPanel();
         window.setLayout(null);
+        window.setBackground(standardBackgroundColor);
+
     }
 
     public Window (String _windowID, int _height, int _width) {

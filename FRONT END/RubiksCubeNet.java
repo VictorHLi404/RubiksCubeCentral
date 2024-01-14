@@ -24,20 +24,30 @@ public class RubiksCubeNet {
     protected Window window;
     protected BlockFace[] cubletFaceList = new BlockFace[54];
 
-    public RubiksCubeNet(ActionListener application, String windowName, Window window) {
+    public RubiksCubeNet(ActionListener application, String windowName, Window window, boolean isEditable, int centerXCoord, int centerYCoord, int cubletWidth, int cubletHeight) {
         this.application = application;
         this.windowName = windowName;
         this.window = window;
-
-        buildCubeFace(window, "WHITE", Arrays.copyOfRange(faceNameList, 0, 9), 900, 470, 60, 60, windowName);
-        buildCubeFace(window, "RED", Arrays.copyOfRange(faceNameList, 9, 18), 1080, 650, 60, 60, windowName);
-        buildCubeFace(window, "GREEN", Arrays.copyOfRange(faceNameList, 18, 27), 900, 650, 60, 60,  windowName);
-        buildCubeFace(window, "YELLOW", Arrays.copyOfRange(faceNameList, 27, 36), 900, 830, 60, 60,  windowName);
-        buildCubeFace(window, "ORANGE", Arrays.copyOfRange(faceNameList, 36, 45), 720, 650, 60, 60,  windowName);
-        buildCubeFace(window, "BLUE", Arrays.copyOfRange(faceNameList, 45, 54), 1260, 650, 60, 60,  windowName);
+//TODO 900 AND 650 FOR CENTER COORDS
+        if (isEditable) {
+            buildEditableCubeFace(window, "WHITE", Arrays.copyOfRange(faceNameList, 0, 9), centerXCoord, centerYCoord-(cubletHeight*3), cubletHeight, cubletWidth, windowName);
+            buildEditableCubeFace(window, "RED", Arrays.copyOfRange(faceNameList, 9, 18), centerXCoord+(cubletWidth*3), centerYCoord, cubletHeight, cubletWidth, windowName);
+            buildEditableCubeFace(window, "GREEN", Arrays.copyOfRange(faceNameList, 18, 27), centerXCoord, centerYCoord, cubletHeight, cubletWidth,  windowName);
+            buildEditableCubeFace(window, "YELLOW", Arrays.copyOfRange(faceNameList, 27, 36), centerXCoord, centerYCoord+(cubletHeight*3), cubletHeight, cubletWidth,  windowName);
+            buildEditableCubeFace(window, "ORANGE", Arrays.copyOfRange(faceNameList, 36, 45), centerXCoord-(cubletWidth*3), centerYCoord, cubletHeight, cubletWidth,  windowName);
+            buildEditableCubeFace(window, "BLUE", Arrays.copyOfRange(faceNameList, 45, 54), centerXCoord+(cubletWidth*6), centerYCoord, cubletHeight, cubletWidth,  windowName);
+        }
+        else {
+            buildNonEditableCubeFace(window, "WHITE", Arrays.copyOfRange(faceNameList, 0, 9), centerXCoord, centerYCoord-(cubletHeight*3), cubletHeight, cubletWidth, windowName);
+            buildNonEditableCubeFace(window, "RED", Arrays.copyOfRange(faceNameList, 9, 18), centerXCoord+(cubletWidth*3), centerYCoord, cubletHeight, cubletWidth, windowName);
+            buildNonEditableCubeFace(window, "GREEN", Arrays.copyOfRange(faceNameList, 18, 27), centerXCoord, centerYCoord, cubletHeight, cubletWidth,  windowName);
+            buildNonEditableCubeFace(window, "YELLOW", Arrays.copyOfRange(faceNameList, 27, 36), centerXCoord, centerYCoord+(cubletHeight*3), cubletHeight, cubletWidth,  windowName);
+            buildNonEditableCubeFace(window, "ORANGE", Arrays.copyOfRange(faceNameList, 36, 45), centerXCoord-(cubletWidth*3), centerYCoord, cubletHeight, cubletWidth,  windowName);
+            buildNonEditableCubeFace(window, "BLUE", Arrays.copyOfRange(faceNameList, 45, 54), centerXCoord+(cubletWidth*6), centerYCoord, cubletHeight, cubletWidth,  windowName);
+        }
     }
 
-    public void buildCubeFace(Window window, String initialColor, String[] id, int centerXCoord, int centerYCoord, int height, int width, String windowName) {
+    public void buildEditableCubeFace(Window window, String initialColor, String[] id, int centerXCoord, int centerYCoord, int height, int width, String windowName) {
         windowName += " ";
         window.add(new BlockFace(windowName + id[0], centerXCoord-width, centerYCoord-height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont)); // LEFT UP
         window.add(new BlockFace(windowName + id[1], centerXCoord, centerYCoord-height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont)); // UP
@@ -48,6 +58,19 @@ public class RubiksCubeNet {
         window.add(new BlockFace(windowName + id[6], centerXCoord-width, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont)); // LEFT DOWN
         window.add(new BlockFace(windowName + id[7], centerXCoord, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont)); // DOWN
         window.add(new BlockFace(windowName + id[8], centerXCoord+width, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont)); // RIGHT DOWN
+    }
+
+    public void buildNonEditableCubeFace(Window window, String initialColor, String[] id, int centerXCoord, int centerYCoord, int height, int width, String windowName) {
+        windowName += " ";
+        window.add(new NonEditableBlockFace(windowName + id[0], centerXCoord-width, centerYCoord-height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // LEFT UP
+        window.add(new NonEditableBlockFace(windowName + id[1], centerXCoord, centerYCoord-height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // UP
+        window.add(new NonEditableBlockFace(windowName + id[2], centerXCoord+width, centerYCoord-height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // RIGHT UP
+        window.add(new NonEditableBlockFace(windowName + id[3], centerXCoord-width, centerYCoord, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont,initialColor)); // LEFT
+        window.add(new NonEditableBlockFace(windowName + id[4], centerXCoord, centerYCoord, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // CENTER
+        window.add(new NonEditableBlockFace(windowName + id[5], centerXCoord+width, centerYCoord, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // RIGHT
+        window.add(new NonEditableBlockFace(windowName + id[6], centerXCoord-width, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // LEFT DOWN
+        window.add(new NonEditableBlockFace(windowName + id[7], centerXCoord, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // DOWN
+        window.add(new NonEditableBlockFace(windowName + id[8], centerXCoord+width, centerYCoord+height, height, width, 1, standardBackgroundColor, application, blankString, FontList.titleFont, initialColor)); // RIGHT DOWN
     }
     
     public void loadCublets(HashMap<String, Object> objectDatabase) {
@@ -63,6 +86,12 @@ public class RubiksCubeNet {
             blockSequence += convertToNum(cubletFaceList[i].getColor());
         }
         return blockSequence;
+    }
+
+    public void overwriteCube(String dataString) {
+        for (int i = 0; i < faceCount; i++) {
+            cubletFaceList[i].updateColor(convertToString(dataString.substring(i, i+1)));
+        }
     }
     
     private String convertToNum(String color) {
@@ -86,8 +115,31 @@ public class RubiksCubeNet {
                 return "0";
         }
     }
-    
-    public void printOutCube() {
+
+    private String convertToString(String num) {
+        if (num == "0") {
+            return "GRAY";
+        }
+        switch (num) {
+            case "1":
+                return "WHITE";
+            case "2":
+                return "RED";
+            case "3":
+                return "GREEN";
+            case "4":
+                return "YELLOW";
+            case "5":
+                return "ORANGE";
+            case "6":
+                return "BLUE";
+            default:
+                return "GRAY";
+
+        }
+    }
+
+    public void printOutCube() { // TODO REMOVE TESTING METHOD
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
                 System.out.print(convertToNum(cubletFaceList[(i*9)+j].getColor()) + " ");
@@ -136,6 +188,7 @@ class BlockFace extends Button {
         this.color = color;
         this.background = DisplayElement.StringToColor(color);
         button.setBackground(this.background);
+        makeVisible();
     }
 
     public String getColor() {

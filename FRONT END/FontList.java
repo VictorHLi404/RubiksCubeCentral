@@ -1,10 +1,13 @@
 import java.awt.Font;
 
 public class FontList {
-    public static Font standardFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(25, 1440));
-    public static Font titleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(80, 1440));
-    public static Font subtitleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(40,1440));
-    public static Font massiveTimerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(300,1440));
+
+    public static final int frameSize = 1920;
+    public static Font standardFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(25, frameSize));
+    public static Font titleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(80, frameSize));
+    public static Font headerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(60, frameSize));
+    public static Font subtitleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(40,frameSize));
+    public static Font massiveTimerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(300,frameSize));
 
     public static Font getTitleFont() {
         return titleFont;
