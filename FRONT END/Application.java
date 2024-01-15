@@ -84,7 +84,7 @@ public class Application implements ActionListener {
         windowList[3] = new Window("Database Window", displayHeight, displayWidth) ;
 
         windowList[3].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"RUBIKS CUBE RUN DATABASE"}, FontList.titleFont)); 
-        windowList[3].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"View your previous runs sorted by most recent or fastest time.\nUpload new runs to the database with the button below."}, FontList.standardFont));
+        windowList[3].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"View your previous runs sorted by most recent or fastest time. Your top 5 runs in terms of time are shown as well.\nUpload new runs to the database with the button below."}, FontList.standardFont));
         windowList[3].add(new WindowChangeButton("databaseGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
 
 
@@ -354,7 +354,6 @@ public class Application implements ActionListener {
         errorCode = errorCode.replace("ERROR CODE ", "");
         JOptionPane.showMessageDialog(frame, errorMessageDatabase.get(errorCode), "ERROR", JOptionPane.ERROR_MESSAGE);
     }
-
 
 }
 
