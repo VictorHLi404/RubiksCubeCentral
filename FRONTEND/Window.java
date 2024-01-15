@@ -1,3 +1,5 @@
+package FRONTEND;
+
 import java.awt.Color;
 
 import javax.swing.*;

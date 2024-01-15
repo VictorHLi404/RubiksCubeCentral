@@ -1,3 +1,5 @@
+package FRONTEND;
+
 public class MergeSort {
 
     public static void mergeArrays(CubeSolve[] arr, CubeSolve[] leftArray, CubeSolve[] rightArray, String sortBy) {

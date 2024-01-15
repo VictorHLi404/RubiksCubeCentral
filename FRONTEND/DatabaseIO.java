@@ -1,3 +1,5 @@
+package FRONTEND;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -6,13 +8,14 @@ import java.util.HashMap;
 
 public class DatabaseIO {
 
-    private static final String solveFile = "lib/solves.csv";
-    private static final String errorFile = "lib/errorCodes.csv";
+    private static final String solveFile = "FRONTEND/lib/solves.csv";
+    private static final String errorFile = "FRONTEND/lib/errorCodes.csv";
     private static BufferedReader csvReader;
     private static FileWriter csvWriter;
     private static final int databaseMaxSize = 100;
 
     public static CubeSolve[] loadSolves() throws IOException {
+        System.out.println(System.getProperty("user.dir"));
         csvReader = new BufferedReader(new FileReader(solveFile));
         CubeSolve[] solveList = new CubeSolve[databaseMaxSize];
         String rowData = "";

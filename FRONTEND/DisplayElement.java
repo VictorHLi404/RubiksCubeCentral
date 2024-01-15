@@ -1,3 +1,5 @@
+package FRONTEND;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -12,7 +14,7 @@ import javax.swing.text.*;
 
 public class DisplayElement {
 
-    public static final boolean onMac = false;
+    public static final boolean onMac = true;
     protected JComponent component;
 
     protected String type;

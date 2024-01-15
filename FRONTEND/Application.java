@@ -1,4 +1,9 @@
+package FRONTEND;
+
 import javax.swing.*;
+
+import BACKEND.RubiksCubeSolver;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -284,8 +289,8 @@ public class Application implements ActionListener {
         }
 
         else if (command.contains("UPLOAD NET")) {
-            //TODO INTEGRATE WITH BACKEND AND VALIDATION
-            currentSolveScrambleBuild.toDataString();
+            String sequence = RubiksCubeSolver.findShortSolution(currentSolveScrambleBuild.toDataString());
+            System.out.println(sequence);
             currentSolveScrambleBuild.printOutCube();
         }
 
