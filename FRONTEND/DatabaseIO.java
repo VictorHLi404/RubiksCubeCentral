@@ -41,7 +41,6 @@ public class DatabaseIO {
         while (rowData != null) {
             String dataArray[] = rowData.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             errorMessageDatabase.put(dataArray[0], dataArray[1]);
-            System.out.println(errorMessageDatabase);
             rowData = csvReader.readLine();
         }
         return errorMessageDatabase;

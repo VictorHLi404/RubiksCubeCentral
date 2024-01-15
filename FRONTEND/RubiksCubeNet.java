@@ -208,6 +208,7 @@ class NonEditableBlockFace extends BlockFace {
         this.color = color;
         this.background = DisplayElement.StringToColor(color);
         button.setBackground(this.background);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         button.setActionCommand("DO NOT CHANGE CURRENT COLOR OF BLOCKFACE");
     }
 }

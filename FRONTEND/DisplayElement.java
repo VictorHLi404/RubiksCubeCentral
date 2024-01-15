@@ -126,7 +126,7 @@ public class DisplayElement {
             case "YELLOW":
                 return Color.YELLOW;
             case "ORANGE":
-                return Color.ORANGE;
+                return Color.getHSBColor((float) 0.077, 1, 1);
             case "BLUE":
                 return Color.BLUE;
             default:
@@ -151,6 +151,7 @@ class TextDisplay extends DisplayElement {
         this.textArea.setFont(font);
         this.textArea.setBackground(background);
         this.textArea.setLineWrap(true);
+        this.textArea.setWrapStyleWord(true);
         this.component = textArea;
         makeVisible();
     }
@@ -227,8 +228,8 @@ class ImageContainer extends DisplayElement {
     public ImageContainer(String id, int xPosition, int yPosition, int height, int width, int depth, Color background, String filePath) throws IOException {
         super(id, xPosition, yPosition, height, width, depth, background);
         this.type = "ImageContainer";
-        System.out.println("Images/" + filePath);
-        BufferedImage tempImage = ImageIO.read(getClass().getResource("/Images/" + filePath));
+        System.out.println("FRONTEND/images/" + filePath);
+        BufferedImage tempImage = ImageIO.read(getClass().getResource("FRONTEND/images/" + filePath));
         Image resizedImage = tempImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         this.image = new JLabel(new ImageIcon(resizedImage));
         this.component = image;

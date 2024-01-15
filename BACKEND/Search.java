@@ -151,7 +151,7 @@ public class Search {
     public synchronized String solution(String facelets, int maxDepth, long probeMax, long probeMin, int verbose) {
         int check = verify(facelets);
         if (check != 0) {
-            return "Error " + Math.abs(check);
+            return "ERROR CODE " + Math.abs(check);
         }
         this.solLen = maxDepth + 1;
         this.probe = 0;

@@ -15,7 +15,7 @@ public class Application implements ActionListener {
      * STUFF TO DO
      * 
      */
-    public static final int windowCount = 7;
+    public static final int windowCount = 8;
 
     public static JFrame frame;
     public static Window currentWindow;
@@ -48,13 +48,16 @@ public class Application implements ActionListener {
         windowList[0] = new Window("Title Window", displayHeight, displayWidth);
 
         windowList[0].add(new TextDisplay("titleText", 450, 125, 100, 1025, 1, standardBackgroundColor, new String[] {"RUBIK'S CUBE CENTRAL"}, FontList.titleFont));
-        windowList[0].add(new TextDisplay("subtitleText", 675, 240, 100, 525, 1, standardBackgroundColor, new String[] {"By Victor Li and Su Nguyen"}, FontList.subtitleFont));
+        windowList[0].add(new TextDisplay("subtitleText", 675, 240, 100, 575, 1, standardBackgroundColor, new String[] {"By Victor Li and Su Nguyen"}, FontList.subtitleFont));
         windowList[0].add(new WindowChangeButton("titleGoToSolver", 675, 350, 100, 525, 1, Color.WHITE, this, new String[] {"CUBE SOLVER"}, FontList.subtitleFont, "Solver Window"));
         windowList[0].add(new WindowChangeButton("titleGoToDatabase", 675, 460, 100, 525, 1, Color.WHITE, this, new String[] {"DATABASE"}, FontList.subtitleFont, "Database Window"));
         windowList[0].add(new WindowChangeButton("titleGoToScrambler", 675, 570, 100, 525, 1, Color.WHITE, this, new String[] {"SCRAMBLER"}, FontList.subtitleFont, "Scramble Generate Window"));
         windowList[0].add(new WindowChangeButton("titleGoToTimer", 675, 680, 100, 525, 1, Color.WHITE, this, new String[] {"TIMER"}, FontList.subtitleFont, "Timer Window"));
-        windowList[0].add(new QuitButton("titleQuitApp", 675, 790, 100, 525, 1, Color.WHITE, this, new String[] {"QUIT"}, FontList.subtitleFont));
+        windowList[0].add(new QuitButton("titleQuitApp", 675, 790, 100, 525, 1, Color.WHITE, this, new String[] {"QUIT"}, FontList.titleFont));
 
+        windowList[0].add(new TextDisplay("manualHeader", 1400, 350, 50, 350, 1, standardBackgroundColor, new String[] {"HOW TO READ"}, FontList.subtitleFont));
+        windowList[0].add(new TextDisplay("manualHeader", 1375, 410, 50, 400, 1, standardBackgroundColor, new String[] {"MOVE NOTATION"}, FontList.subtitleFont));
+        windowList[0].add(new WindowChangeButton("titleGoToManual", 1315, 460, 300, 500, 1, Color.WHITE, this, new String[] {"READ MANUAL"}, FontList.subtitleFont, "Manual Window"));
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         windowList[1] = new Window("Solver Window", displayHeight, displayWidth);
@@ -69,6 +72,7 @@ public class Application implements ActionListener {
         windowList[1].add(new ColorSwatch("orangeColorSwatch", 1290, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "ORANGE"));
         windowList[1].add(new ColorSwatch("blueColorSwatch", 1600, 270, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "BLUE"));
         
+        windowList[1].add(new TextDisplay("solutionDisplayText", 50, 410, 500, 585, 1, Color.WHITE, new String[] {"GENERATED SCRAMBLE\nGOES HERE"}, FontList.subtitleFont));
         currentSolveScrambleBuild = new RubiksCubeNet(this, "Solver Window", windowList[1], true, 900, 650, 60, 60);
 
         windowList[1].add(new WindowChangeButton("solverGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
@@ -168,6 +172,13 @@ public class Application implements ActionListener {
         windowList[6].add(new ScrambleGeneratorButton("generateScrambleButton", 1250, 700, 125, 600, 1, Color.WHITE, this, new String[] {"GENERATE SCRAMBLE"}, FontList.subtitleFont));
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        windowList[7] = new Window("Manual Window", displayHeight, displayWidth);
+        windowList[7].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"READING MOVE NOTATION"}, FontList.titleFont)); 
+        windowList[7].add(new WindowChangeButton("manualeGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
+        windowList[7].add(new ImageContainer("manualImage", 50, 120, 800, 1600, 1, standardBackgroundColor, "manual.png"));
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         solveDatabase = new DatabaseView(DatabaseIO.loadSolves());
         loadObjectDatabase();
 
@@ -272,7 +283,6 @@ public class Application implements ActionListener {
                     BlockFace currentBlockFace = (BlockFace) currentElement;
                     if (currentBlockFace.getButton().equals(sourceObject)) {
                         currentBlockFace.updateColor(currentColor);
-                        System.out.println(currentBlockFace.getId());
                         break;
                     }
                 }
@@ -290,8 +300,15 @@ public class Application implements ActionListener {
 
         else if (command.contains("UPLOAD NET")) {
             String sequence = RubiksCubeSolver.findShortSolution(currentSolveScrambleBuild.toDataString());
-            System.out.println(sequence);
-            currentSolveScrambleBuild.printOutCube();
+            TextDisplay solutionDisplayText = (TextDisplay) objectDatabase.get("solutionDisplayText");
+            if (sequence.contains("ERROR CODE ")) {
+                displayErrorMessage(sequence);
+                return;
+            }
+            else {
+                solutionDisplayText.updateTextDisplay(sequence);
+                return;
+            }
         }
 
         else if (command.contains("UPLOAD RUN")) {

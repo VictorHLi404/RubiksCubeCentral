@@ -158,7 +158,6 @@ class CubeSolve {
         long seconds = Long.valueOf(solveTime.substring(3, 5));
         long milliseconds = Long.valueOf(solveTime.substring(6, 9));
 
-        System.out.println(minutes + " " + seconds + " " + milliseconds);
         return minutes*60000 + seconds*1000 + milliseconds;
     }
 
