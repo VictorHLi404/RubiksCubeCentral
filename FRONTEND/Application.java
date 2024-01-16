@@ -175,8 +175,8 @@ public class Application implements ActionListener {
 
         windowList[7] = new Window("Manual Window", displayHeight, displayWidth);
         windowList[7].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"READING MOVE NOTATION"}, FontList.titleFont)); 
-        windowList[7].add(new WindowChangeButton("manualeGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
-        windowList[7].add(new ImageContainer("manualImage", 50, 120, 800, 1600, 1, standardBackgroundColor, "manual.png"));
+        windowList[7].add(new WindowChangeButton("manualGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
+        windowList[7].add(new ImageContainer("manualImage", 50, 160, 800, 1600, 1, standardBackgroundColor, "manual.png"));
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         solveDatabase = new DatabaseView(DatabaseIO.loadSolves());

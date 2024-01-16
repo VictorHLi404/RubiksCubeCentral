@@ -15,6 +15,8 @@ import javax.swing.text.*;
 public class DisplayElement {
 
     public static final boolean onMac = true;
+    public static int frameSizeHorizontal;
+    public static int frameSizeVertical;
     protected JComponent component;
 
     protected String type;
@@ -46,14 +48,17 @@ public class DisplayElement {
     }
 
     public void display() {
-            if (onMac) {
-                component.setBounds(resizeHorizontal(xPosition, 1440), resizeVertical(yPosition, 900), resizeHorizontal(width, 1440), resizeVertical(height, 900));
-            }
-            else {
-                component.setBounds(xPosition, yPosition, width, height);
-            }
-            component.validate();
-            component.setVisible(isVisible);
+        if (onMac) {
+            frameSizeHorizontal = 1440;
+            frameSizeVertical = 900;
+        }
+        else {
+            frameSizeHorizontal = 1920;
+            frameSizeVertical = 1080;
+        }
+        component.setBounds(resizeHorizontal(xPosition, frameSizeHorizontal), resizeVertical(yPosition, frameSizeVertical), resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical));
+        component.validate();
+        component.setVisible(isVisible);
     }
 
     public int resizeHorizontal(double initial, double frameSize) { // RESIZE ACCORDING TO 1920 
@@ -224,13 +229,14 @@ class EditableTextDisplay extends TextDisplay {
 class ImageContainer extends DisplayElement {
 
     protected JLabel image;
+    protected static final String libraryPath = "images/";
 
     public ImageContainer(String id, int xPosition, int yPosition, int height, int width, int depth, Color background, String filePath) throws IOException {
         super(id, xPosition, yPosition, height, width, depth, background);
         this.type = "ImageContainer";
-        System.out.println("FRONTEND/images/" + filePath);
-        BufferedImage tempImage = ImageIO.read(getClass().getResource("FRONTEND/images/" + filePath));
-        Image resizedImage = tempImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        System.out.println(libraryPath + filePath);
+        BufferedImage tempImage = ImageIO.read(getClass().getResource(libraryPath + filePath));
+        Image resizedImage = tempImage.getScaledInstance(resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical), Image.SCALE_SMOOTH);
         this.image = new JLabel(new ImageIcon(resizedImage));
         this.component = image;
         makeVisible();
