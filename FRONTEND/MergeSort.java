@@ -25,7 +25,7 @@ public class MergeSort {
                     rightArrayIndex++;
                 }
             }
-            else if (sortBy.equals("DATE")) { // TODO USE LOCALDATE.ISBEFORE
+            else if (sortBy.equals("DATE")) {
                 if (leftArray[leftArrayIndex].dateToLocalDate().isAfter(rightArray[rightArrayIndex].dateToLocalDate())) {
                     arr[mainArrayIndex] = leftArray[leftArrayIndex];
                     mainArrayIndex++;

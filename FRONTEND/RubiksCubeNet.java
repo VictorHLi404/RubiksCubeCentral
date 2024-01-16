@@ -140,18 +140,6 @@ public class RubiksCubeNet {
 
         }
     }
-
-    public void printOutCube() { // TODO REMOVE TESTING METHOD
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 9; j++) {
-                System.out.print(convertToNum(cubletFaceList[(i*9)+j].getColor()) + " ");
-                if (j == 2 || j == 5 || j == 8) {
-                    System.out.println();
-                }
-            }
-            System.out.println("NEXT FACE");
-        }
-    }
 }
 
 class ColorSwatch extends Button {

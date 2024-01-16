@@ -96,6 +96,23 @@ class DatabaseView {
         loadPage();
     }
 
+    public void deleteFromList(int entryIndex) {
+        int deleteIndex = entryIndex + currentIndex - 1;
+        System.out.println(deleteIndex);
+        solveList[deleteIndex] = null;
+        for (int i = deleteIndex; i < solveListSize; i++) { // shuffle elements down
+            if (i < databaseMaxSize-1) {
+                solveList[i] = solveList[i+1];
+            }
+            else {
+                solveList[i] = null;
+            }
+        }
+        solveListSize--;
+        sort();
+        loadPage();
+    }
+
     public CubeSolve[] getSolveList() {
         return solveList;
     }
@@ -173,7 +190,7 @@ class CubeSolve {
     }
 
     public String toDisplayString() {
-        return solveTime + "          " + date;
+        return solveTime + "        " + date;
     }
 
     public String convertToCSV() {

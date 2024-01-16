@@ -7,6 +7,9 @@ import java.time.format.ResolverStyle;
 
 public class InputValidation {
 
+    protected static final String[] validMoveList = new String[] {"U", "U\'", "U2,", "R", "R\'", "R2", 
+    "F", "F\'", "F2", "L", "L\'", "L2", "D", "D\'", "D2", "B", "B\'", "B2"};
+
     public static boolean dateIsValid(String date) {
         if (!isValidNumber(date)) {
             return false;
@@ -56,5 +59,24 @@ public class InputValidation {
         else {
             return false;
         }
+    }
+
+    private static boolean isValidMove(String move) {
+        for (int i = 0; i < validMoveList.length; i++) {
+            if (validMoveList[i].equals(move)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isValidMoveSequence(String string) {
+        String[] moveSequence = string.split(" ");
+        for (int i = 0; i < moveSequence.length; i++) {
+            if (!isValidMove(moveSequence[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }

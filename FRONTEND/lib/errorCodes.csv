@@ -10,3 +10,7 @@ errorCode,errorMessage
 20,"The time is not a valid input. Ensure to enter in the format 00:00:000."
 21,"The date is not a valid input. Ensure to enter in the format dd/mm/yyyy."
 22,"There is no more space in the database to upload runs. Please delete some runs from the database in order to make space."
+23,"A scramble has not been generated yet. Please generate a scramble before going to the timer."
+24,"You cannot upload a time of 00:00:000."
+25,"You cannot delete an entry that does not exist."
+26,"Please input a valid sequences of moves for the scramble."

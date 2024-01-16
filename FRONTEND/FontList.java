@@ -9,7 +9,7 @@ public class FontList {
     public static Font titleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(80, frameSize));
     public static Font headerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(60, frameSize));
     public static Font subtitleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(40,frameSize));
-    public static Font massiveTimerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(300,frameSize));
+    public static Font massiveTimerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(200,frameSize));
 
     public static Font getTitleFont() {
         return titleFont;

@@ -117,7 +117,7 @@ public class DisplayElement {
         this.background = background;
     }  
 
-    public static Color StringToColor(String color) { //TODO make in less monkey way
+    public static Color StringToColor(String color) {
         if (color == null) {
             return Color.GRAY;
         }
@@ -161,8 +161,8 @@ class TextDisplay extends DisplayElement {
         makeVisible();
     }
 
-    public String[] getTextSource() {
-        return textSource;
+    public String getText() {
+        return textArea.getText();
     }
     public Font getFont() {
         return font;
@@ -229,19 +229,22 @@ class EditableTextDisplay extends TextDisplay {
 class ImageContainer extends DisplayElement {
 
     protected JLabel image;
-    protected static final String libraryPath = "images/";
+    public static final String libraryPath = "images/";
 
     public ImageContainer(String id, int xPosition, int yPosition, int height, int width, int depth, Color background, String filePath) throws IOException {
         super(id, xPosition, yPosition, height, width, depth, background);
         this.type = "ImageContainer";
-        System.out.println(libraryPath + filePath);
-        BufferedImage tempImage = ImageIO.read(getClass().getResource(libraryPath + filePath));
-        Image resizedImage = tempImage.getScaledInstance(resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical), Image.SCALE_SMOOTH);
-        this.image = new JLabel(new ImageIcon(resizedImage));
+        this.image = new JLabel(createImage(filePath));
         this.component = image;
         makeVisible();
     }
 
+    public ImageIcon createImage(String filePath) throws IOException {
+        BufferedImage tempImage = ImageIO.read(getClass().getResource(libraryPath + filePath));
+        Image resizedImage = tempImage.getScaledInstance(resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical), Image.SCALE_SMOOTH);
+        ImageIcon newImage = new ImageIcon(resizedImage);
+        return newImage;
+    }
 }
 
 class InteractableObject extends DisplayElement {
@@ -284,6 +287,7 @@ class Button extends InteractableTextField {
         button.setBackground(background);
         button.setFont(font);
         button.addActionListener(actionListener);
+        button.setOpaque(true);
         this.component = button;
         makeVisible();
     }
@@ -358,7 +362,6 @@ class UploadRunButton extends Button {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
         this.type = "UploadRunButton";
         button.setActionCommand("UPLOAD RUN");
-        //TODO Auto-generated constructor stub
     }
 
 }
@@ -399,8 +402,47 @@ class ChangeDatabaseSortTypeButton extends Button {
     public ChangeDatabaseSortTypeButton(String id, int xPosition, int yPosition, int height, int width, int depth,
             Color background, ActionListener actionListener, String[] textSource, Font font, String sortType) {
         super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "ChangeDatabaseSortTypeButton";
         this.sortType = sortType;
         button.setActionCommand("CHANGE SORT TO " + sortType);
     }
+}
+
+class DeleteDatabaseEntryButton extends Button {
+
+    protected int entryPosition;
+
+    public DeleteDatabaseEntryButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font, int entryPosition) throws IOException {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.entryPosition = entryPosition;
+        BufferedImage tempImage = ImageIO.read(getClass().getResource(ImageContainer.libraryPath + "X.png"));
+        Image resizedImage = tempImage.getScaledInstance(resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical), Image.SCALE_SMOOTH);
+        ImageIcon newImage = new ImageIcon(resizedImage);
+        button.setActionCommand("DELETE ENTRY " + String.valueOf(entryPosition));
+        button.setBackground(background);
+        button.setIcon(newImage);
+    }
+}
+
+class UploadTimeButton extends Button {
+
+    public UploadTimeButton(String id, int xPosition, int yPosition, int height, int width, int depth, Color background,
+            ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "UploadTimeButton";
+        button.setActionCommand("UPLOAD TIME FOR RUN");
+    }
+}
+
+class UploadScrambleButton extends Button {
+
+    public UploadScrambleButton(String id, int xPosition, int yPosition, int height, int width, int depth,
+            Color background, ActionListener actionListener, String[] textSource, Font font) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
+        this.type = "UploadScrambleButton";
+        button.setActionCommand("UPLOAD SCRAMBLE FOR RUN");
+    }
+
 }
 

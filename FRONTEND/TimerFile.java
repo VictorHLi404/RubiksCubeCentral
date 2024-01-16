@@ -30,7 +30,7 @@ class TimerButton extends Button {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timeElapsed = System.currentTimeMillis()-startTime+pausedTimeElapsed;
-                button.setText(millisecondTimeFormatter(timeElapsed));
+                button.setText(timerMillisecondTimeFormatter(timeElapsed));
             }
         });
         button.addActionListener(new ActionListener() {
@@ -53,7 +53,7 @@ class TimerButton extends Button {
         makeVisible();
     }
     
-    public String millisecondTimeFormatter(long milliseconds) { // IN FORMAT 00:00:000
+    public String timerMillisecondTimeFormatter(long milliseconds) { // IN FORMAT 00:00:000
         long minutes = Math.floorDiv(milliseconds,60000);
         milliseconds-= minutes*60000;
         long seconds = Math.floorDiv(milliseconds,1000);
@@ -83,6 +83,15 @@ class TimerButton extends Button {
         return timeString;
     }
 
+    public String[] databaseUploadMillisecondTimeFormatter() { // contains minutes, seconds, and milliseconds in an array
+        String[] elements = new String[3];
+        String formattedString = timerMillisecondTimeFormatter(timeElapsed);
+        elements[0] = formattedString.substring(0,2);
+        elements[1] = formattedString.substring(3,5);
+        elements[2] = formattedString.substring(6,9);
+        return elements;
+    }
+
     public void resetTimer() {
         startTime = Integer.MIN_VALUE;
         endTime = Integer.MIN_VALUE;
@@ -92,6 +101,13 @@ class TimerButton extends Button {
         timer.stop();
         timerIsRunning = false;
         button.setText("00:00:000");
+    }
+
+    public void stopTimer() {
+        timer.stop();
+        endTime = timeElapsed;
+        pausedTimeElapsed = endTime;
+        timerIsRunning = false;
     }
 }
 
