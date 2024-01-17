@@ -30,7 +30,7 @@ public class RubiksCubeNet {
         this.application = application;
         this.windowName = windowName;
         this.window = window;
-//TODO 900 AND 650 FOR CENTER COORDS
+
         if (isEditable) {
             buildEditableCubeFace(window, "WHITE", Arrays.copyOfRange(faceNameList, 0, 9), centerXCoord, centerYCoord-(cubletHeight*3), cubletHeight, cubletWidth, windowName);
             buildEditableCubeFace(window, "RED", Arrays.copyOfRange(faceNameList, 9, 18), centerXCoord+(cubletWidth*3), centerYCoord, cubletHeight, cubletWidth, windowName);
@@ -138,6 +138,43 @@ public class RubiksCubeNet {
             default:
                 return "GRAY";
 
+        }
+    }
+
+    public static String convertLetterFaceToNum(String sequence) {
+        String newString = "";
+        for (int i = 0; i < sequence.length(); i++) {
+            String character = sequence.substring(i, i+1);
+            if (character.equals("U")) {newString += "1";}
+            if (character.equals("R")) {newString += "2";}
+            if (character.equals("F")) {newString += "3";}
+            if (character.equals("D")) {newString += "4";}
+            if (character.equals("L")) {newString += "5";}
+            if (character.equals("B")) {newString += "6";}
+        }
+        return newString;
+    }
+
+    public void reset() {
+        for (int i = 0; i < faceCount; i++) {
+            if (i < 9) {
+                cubletFaceList[i].updateColor("WHITE");
+            }
+            else if (i < 18) {
+                cubletFaceList[i].updateColor("RED");
+            }
+            else if (i < 27) {
+                cubletFaceList[i].updateColor("GREEN");
+            }
+            else if (i < 36) {
+                cubletFaceList[i].updateColor("YELLOW");
+            }
+            else if (i < 45) {
+                cubletFaceList[i].updateColor("ORANGE");
+            }
+            else {
+                cubletFaceList[i].updateColor("BLUE");
+            }
         }
     }
 }

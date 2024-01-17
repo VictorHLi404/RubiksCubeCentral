@@ -6,18 +6,18 @@ import java.time.format.ResolverStyle;
 
 class DatabaseView {
     protected CubeSolve[] solveList;
-
     protected final int databaseMaxSize = 100;
-
     protected int solveListSize;
 
     protected String currentSortType;
 
     protected final int displayPageLength = 5;
     protected CubeSolve[] currentPage;
-
-    protected String averageTime;
     protected int currentIndex = 0;
+
+    protected final int averageSampleSize = 5;
+    protected String averageTime;
+    
 
     public DatabaseView(CubeSolve[] solveList) {
         this.solveList = solveList;
@@ -36,6 +36,7 @@ class DatabaseView {
         for (int i = 0; i < displayPageLength; i++) {
             currentPage[i] = solveList[i];
         }
+        updateAverageTime();
     }
 
     public void loadPage() {
@@ -44,7 +45,7 @@ class DatabaseView {
         }
     }
 
-    public String[] getCurrentPage() {
+    public String[] getCurrentPageInfo() {
         String[] currentPageInfo = new String[displayPageLength];
         for (int i = 0; i < displayPageLength; i++) {
             if (currentPage[i] != null) {
@@ -55,6 +56,19 @@ class DatabaseView {
             }
         }
         return currentPageInfo;
+    }
+
+    public String[] getCurrentPageScrambles() {
+        String[] currentPageScrambles = new String[displayPageLength];
+        for (int i = 0; i < displayPageLength; i++) {
+            if (currentPage[i] != null) {
+                currentPageScrambles[i] = currentPage[i].getScramble();
+            }
+            else {
+                currentPageScrambles[i] = "";
+            }
+        }
+        return currentPageScrambles;
     }
 
     public void updateCurrentIndex(boolean moveForward) {
@@ -94,6 +108,7 @@ class DatabaseView {
         solveListSize++;
         sort();
         loadPage();
+        updateAverageTime();
     }
 
     public void deleteFromList(int entryIndex) {
@@ -109,6 +124,30 @@ class DatabaseView {
             }
         }
         solveListSize--;
+        sort();
+        loadPage();
+        updateAverageTime();
+    }
+
+    public void updateAverageTime() {
+        String tempSortType = currentSortType;
+        currentSortType = "TIME";
+        sort();
+        loadPage();
+        long sum = 0;
+        int runCount = 0;
+        for (int i = 0; i < averageSampleSize; i++) {
+            if (solveList[i] == null) {
+                break;
+            }
+            runCount++;
+            String time = solveList[i].getSolveTime();
+            sum += Integer.valueOf(time.substring(0, 2))*60000 + Integer.valueOf(time.substring(3, 5))*1000 + Integer.valueOf(time.substring(6, 9));
+        }
+        System.out.println(sum);
+        sum = sum / runCount;
+        averageTime = TimerButton.timerMillisecondTimeFormatter(sum);
+        currentSortType = tempSortType;
         sort();
         loadPage();
     }
@@ -136,6 +175,10 @@ class DatabaseView {
 
     public int getDisplayPageLength() {
         return displayPageLength;
+    }
+
+    public String getAverageTime() {
+        return averageTime;
     }
 
 }

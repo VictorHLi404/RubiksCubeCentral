@@ -14,3 +14,4 @@ errorCode,errorMessage
 24,"You cannot upload a time of 00:00:000."
 25,"You cannot delete an entry that does not exist."
 26,"Please input a valid sequences of moves for the scramble."
+27,"You cannot view the scramble of an entry that does not exist."

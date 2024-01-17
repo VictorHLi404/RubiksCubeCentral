@@ -53,7 +53,7 @@ class TimerButton extends Button {
         makeVisible();
     }
     
-    public String timerMillisecondTimeFormatter(long milliseconds) { // IN FORMAT 00:00:000
+    public static String timerMillisecondTimeFormatter(long milliseconds) { // IN FORMAT 00:00:000
         long minutes = Math.floorDiv(milliseconds,60000);
         milliseconds-= minutes*60000;
         long seconds = Math.floorDiv(milliseconds,1000);

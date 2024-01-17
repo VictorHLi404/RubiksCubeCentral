@@ -311,15 +311,18 @@ class WindowChangeButton extends Button {
 
 }
 
-class ScrambleViewButton extends WindowChangeButton {
+class ScrambleViewButton extends Button {
+
     protected String scramble;
+    protected int entryPosition;
 
     public ScrambleViewButton(String id, int xPosition, int yPosition, int height, int width, int depth,
-            Color background, ActionListener actionListener, String[] textSource, Font font, String targetWindow, String scramble) {
-        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font, targetWindow);
+            Color background, ActionListener actionListener, String[] textSource, Font font, int entryPosition, String scramble) {
+        super(id, xPosition, yPosition, height, width, depth, background, actionListener, textSource, font);
         this.type = "ScrambleViewButton";
         this.scramble = scramble;
-        button.setActionCommand("LOAD SCRAMBLE VIEW WITH SCRAMBLE " + scramble);
+        this.entryPosition = entryPosition;
+        button.setActionCommand("LOAD SCRAMBLE VIEW " + String.valueOf(entryPosition) + " WITH SCRAMBLE " + scramble);
         makeVisible();
     }
 
@@ -329,6 +332,7 @@ class ScrambleViewButton extends WindowChangeButton {
 
     public void setScramble(String scramble) {
         this.scramble = scramble;
+        button.setActionCommand("LOAD SCRAMBLE VIEW " + String.valueOf(entryPosition) + " WITH SCRAMBLE " + scramble);
     }
 }
 

@@ -6,7 +6,7 @@ public class CubeScrambler {
     static Random r = new Random();
 
     static String[] moves = {"Rx", "Lx", "Uy", "Dy", "Fz", "Bz"};
-    static String[] directions = {" ", "' ", "2 "};
+    static String[] directions = {" ", "\' ", "2 "};
 
     public static String getMove(String move1, String move2) {
         String move = moves[r.nextInt(moves.length)];

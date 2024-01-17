@@ -7,7 +7,7 @@ import java.time.format.ResolverStyle;
 
 public class InputValidation {
 
-    protected static final String[] validMoveList = new String[] {"U", "U\'", "U2,", "R", "R\'", "R2", 
+    protected static final String[] validMoveList = new String[] {"U", "U\'", "U2", "R", "R\'", "R2", 
     "F", "F\'", "F2", "L", "L\'", "L2", "D", "D\'", "D2", "B", "B\'", "B2"};
 
     public static boolean dateIsValid(String date) {
@@ -71,9 +71,12 @@ public class InputValidation {
     }
     
     public static boolean isValidMoveSequence(String string) {
+        System.out.println(string);
         String[] moveSequence = string.split(" ");
+        System.out.println("MOVE SEQUENCE " + moveSequence);
         for (int i = 0; i < moveSequence.length; i++) {
             if (!isValidMove(moveSequence[i])) {
+                System.out.println(moveSequence[i]);
                 return false;
             }
         }

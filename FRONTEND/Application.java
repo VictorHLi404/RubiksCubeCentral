@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import org.w3c.dom.Text;
 
+import BACKEND.CubeScrambler;
 import BACKEND.RubiksCubeSolver;
 
 import java.awt.*;
@@ -91,7 +92,7 @@ public class Application implements ActionListener {
 
         windowList[2].add(new TimerButton("timerButton", 190, 300, 400, 1500, 1, Color.WHITE, this, new String[] {"00:00:000"}, FontList.massiveTimerFont));
         windowList[2].add(new ResetTimerButton("resetTimerButton", 190, 750, 200, 700, 1, Color.WHITE, this, new String[] {"RESET TIMER"}, FontList.titleFont));
-        windowList[2].add(new UploadTimeButton("UploadTimerButton", 920, 750, 200, 700, 1, Color.WHITE, this, new String[] {"UPLOAD TIME"}, FontList.titleFont));
+        windowList[2].add(new UploadTimeButton("UploadTimerButton", 990, 750, 200, 700, 1, Color.WHITE, this, new String[] {"UPLOAD TIME"}, FontList.titleFont));
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -119,17 +120,17 @@ public class Application implements ActionListener {
         windowList[3].add(new TextDisplay("slot4DataDisplay", 245, 715, 60, 600, 1, standardBackgroundColor, new String[] {"AAAAAAAAAAAAAAAAAAAAAAAAA"}, FontList.subtitleFont)); 
         windowList[3].add(new TextDisplay("slot5DataDisplay", 245, 825, 60, 600, 1, standardBackgroundColor, new String[] {"AAAAAAAAAAAAAAAAAAAAAAAAA"}, FontList.subtitleFont));  
 
-        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 375, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, "Scramble View Window", null));
-        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 485, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, "Scramble View Window", null));
-        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 595, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, "Scramble View Window", null));
-        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 705, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, "Scramble View Window", null));
-        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 815, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, "Scramble View Window", null));
+        windowList[3].add(new ScrambleViewButton("slot1ScrambleView", 895, 375, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, 1, null));
+        windowList[3].add(new ScrambleViewButton("slot2ScrambleView", 895, 485, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, 2, null));
+        windowList[3].add(new ScrambleViewButton("slot3ScrambleView", 895, 595, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont,  3, null));
+        windowList[3].add(new ScrambleViewButton("slot4ScrambleView", 895, 705, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, 4, null));
+        windowList[3].add(new ScrambleViewButton("slot5ScrambleView", 895, 815, 60, 360, 1, Color.WHITE, this, new String[] {"VIEW SCRAMBLE"}, FontList.standardFont, 5, null));
 
-        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry",50, 375, 60, 60, 1, Color.RED, this, new String[] {""}, FontList.standardFont, 1));
-        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 485, 60, 60, 1, Color.RED, this, new String[] {""}, FontList.standardFont, 2));
-        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 595, 60, 60, 1, Color.RED, this, new String[] {""}, FontList.standardFont, 3));
-        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 705, 60, 60, 1, Color.RED, this, new String[] {""}, FontList.standardFont, 4));
-        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 815, 60, 60, 1, Color.RED, this, new String[] {""}, FontList.standardFont, 5));
+        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry",50, 375, 60, 60, 1, standardBackgroundColor, this, new String[] {""}, FontList.standardFont, 1));
+        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 485, 60, 60, 1, standardBackgroundColor, this, new String[] {""}, FontList.standardFont, 2));
+        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 595, 60, 60, 1, standardBackgroundColor, this, new String[] {""}, FontList.standardFont, 3));
+        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 705, 60, 60, 1, standardBackgroundColor, this, new String[] {""}, FontList.standardFont, 4));
+        windowList[3].add(new DeleteDatabaseEntryButton("slot1DeleteEntry", 50, 815, 60, 60, 1, standardBackgroundColor, this, new String[] {""}, FontList.standardFont, 5));
 
         windowList[3].add(new TextDisplay("averageHeading", 1350, 500, 100, 500, 1, standardBackgroundColor, new String[] {"TIME AVERAGE"}, FontList.headerFont));
         windowList[3].add(new TextDisplay("averageTimeDisplay", 1425, 600, 100, 350, 1, standardBackgroundColor, new String[] {"00:00:000"}, FontList.headerFont)); 
@@ -142,15 +143,19 @@ public class Application implements ActionListener {
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
         windowList[4] = new Window("Scramble View Window", displayHeight, displayWidth);
-        windowList[4].getWindow().setBackground(standardBackgroundColor);
+        windowList[4].add(new TextDisplay("titleText", 50, 50, 100, 1100, 1, standardBackgroundColor, new String[] {"SCRAMBLE VIEW"}, FontList.titleFont)); 
+        windowList[4].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"This will display the scramble generated and the final cube state after the scramble. If no scramble was generated, the cube will be in the default state."}, FontList.standardFont));
+        windowList[4].add(new WindowChangeButton("scrambleViewGoToDatabase", 1275, 50, 100, 600, 1, Color.WHITE, this, new String[] {"BACK TO DATABASE"}, FontList.subtitleFont, "Database Window"));
 
+        windowList[4].add(new TextDisplay("scrambleViewTextDisplay", 1250, 360, 300, 600, 1, Color.WHITE, new String[] {"SCRAMBLE LISTED GOES HERE"}, FontList.subtitleFont));
+        currentDatabaseScrambleView = new RubiksCubeNet(this, "Scramble View Window", windowList[4], false, 450, 600, 70, 70);
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         windowList[5] = new Window("Database Upload Window", displayHeight, displayWidth);
 
-        windowList[5].add(new TextDisplay("titleText", 50, 50, 100, 1300, 1, standardBackgroundColor, new String[] {"UPLOAD NEW RUN"}, FontList.titleFont)); 
+        windowList[5].add(new TextDisplay("titleText", 50, 50, 100, 1100, 1, standardBackgroundColor, new String[] {"UPLOAD NEW RUN"}, FontList.titleFont)); 
         windowList[5].add(new TextDisplay("subtitleText", 50, 160, 100, 1400, 1, standardBackgroundColor, new String[] {"Fill out the run below with the time (minutes:seconds:milliseconds), date (dd/mm/yyyy), and given scramble.\nIf you have a time and/or scramble currently generated, it will autofill into the fields."}, FontList.standardFont));
-        windowList[5].add(new WindowChangeButton("uploadDatabaseGoToDatabase", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO DATABASE"}, FontList.subtitleFont, "Database Window"));
+        windowList[5].add(new WindowChangeButton("uploadDatabaseGoToDatabase", 1275, 50, 100, 600, 1, Color.WHITE, this, new String[] {"BACK TO DATABASE"}, FontList.subtitleFont, "Database Window"));
 
         windowList[5].add(new TextDisplay("timeHeading", 150, 300, 100, 250, 1, standardBackgroundColor, new String[] {"TIME"}, FontList.titleFont));
         windowList[5].add(new EditableTextDisplay("minuteInput", 600, 300, 80, 200, 1, Color.WHITE, new String[] {"00"}, FontList.titleFont, 1, 2));
@@ -178,11 +183,11 @@ public class Application implements ActionListener {
         windowList[6].add(new WindowChangeButton("scrambleGenerateGoToMain", 1475, 50, 100, 400, 1, Color.WHITE, this, new String[] {"BACK TO MAIN"}, FontList.subtitleFont, "Title Window"));
 
         windowList[6].add(new TextDisplay("scrambleHeader", 1325, 300, 50, 500, 1, standardBackgroundColor, new String[] {"CURRENT SCRAMBLE"}, FontList.subtitleFont));
-        windowList[6].add(new TextDisplay("scrambleTextDisplay", 1250, 360, 300, 600, 1, Color.WHITE, new String[] {"SCRAMBLE GENERATED HERE"}, FontList.standardFont));
+        windowList[6].add(new TextDisplay("scrambleGenerateTextDisplay", 1250, 360, 300, 600, 1, Color.WHITE, new String[] {"SCRAMBLE GENERATED HERE"}, FontList.subtitleFont));
 
         currentGenerateScrambleView = new RubiksCubeNet(this, "Scramble Generate Window", windowList[6], false, 450, 600, 70, 70);
         windowList[6].add(new ScrambleGeneratorButton("generateScrambleButton", 1250, 700, 125, 600, 1, Color.WHITE, this, new String[] {"GENERATE SCRAMBLE"}, FontList.subtitleFont));
-        windowList[6].add(new UploadScrambleButton("UploadScrambleButton", 1250, 950, 125, 600, 1, Color.WHITE, this, new String[] {"TIME RUN"}, FontList.subtitleFont));
+        windowList[6].add(new UploadScrambleButton("UploadScrambleButton", 1250, 850, 125, 600, 1, Color.WHITE, this, new String[] {"TIME RUN"}, FontList.subtitleFont));
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         windowList[7] = new Window("Manual Window", displayHeight, displayWidth);
@@ -191,11 +196,13 @@ public class Application implements ActionListener {
         windowList[7].add(new ImageContainer("manualImage", 50, 160, 800, 1600, 1, standardBackgroundColor, "manual.png"));
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         solveDatabase = new DatabaseView(DatabaseIO.loadSolves());
         loadObjectDatabase();
 
         currentSolveScrambleBuild.loadCublets(objectDatabase);
         currentGenerateScrambleView.loadCublets(objectDatabase);
+        currentDatabaseScrambleView.loadCublets(objectDatabase);
         loadDatabasePage();
 
         errorMessageDatabase = DatabaseIO.loadErrorMessages();
@@ -225,17 +232,26 @@ public class Application implements ActionListener {
     }
 
     public static void loadDatabasePage() {
-        String[] pageData = solveDatabase.getCurrentPage();
+        String[] pageData = solveDatabase.getCurrentPageInfo();
+        String[] scrambleData = solveDatabase.getCurrentPageScrambles();
         int databaseIndex = solveDatabase.getCurrentIndex();
+        String averageTime = solveDatabase.getAverageTime();
         for (int i = 1; i <= 5; i++) {
             String slotId = "slot" + String.valueOf(i) + "DataDisplay";
             TextDisplay slotDisplay = (TextDisplay) objectDatabase.get(slotId);
             slotDisplay.updateTextDisplay(pageData[i-1]);
+
             String headerId = "slot" + String.valueOf(i) + "Heading";
             TextDisplay headerDisplay = (TextDisplay) objectDatabase.get(headerId);
             headerDisplay.updateTextDisplay(String.valueOf(i+databaseIndex));
+
+            String scrambleId = "slot" + String.valueOf(i) + "ScrambleView";
+            ScrambleViewButton scrambleViewButton = (ScrambleViewButton) objectDatabase.get(scrambleId);
+            scrambleViewButton.setScramble(scrambleData[i-1]);
+
+            TextDisplay timeAverage = (TextDisplay) objectDatabase.get("averageTimeDisplay");
+            timeAverage.updateTextDisplay(averageTime);
         }
-        //TODO IMPLEMENT SCRAMBLE VIEW LOADER
     }
 
     public static void changeWindow(String windowID) {
@@ -398,10 +414,38 @@ public class Application implements ActionListener {
             solveDatabase.updateSortType(command);
             loadDatabasePage();
         }
+        
+        else if (command.contains("LOAD SCRAMBLE VIEW ")) {
+            command = command.replace("LOAD SCRAMBLE VIEW ", "");
+            System.out.println(command);
+            TextDisplay slotDisplay = (TextDisplay) objectDatabase.get("slot" + command.substring(0, 1) + "DataDisplay");
+            if (slotDisplay.getText().contains("ENTRY DOES NOT EXIST")) {
+                displayErrorMessage("ERROR CODE 27");
+                return;
+            }
+            System.out.println("TRIGGERED");
+            command = command.replace(command.substring(0, 1), "");
+            command = command.replace(" WITH SCRAMBLE ", "");
+            String newScramble = command;
+            TextDisplay scrambleTextDisplay = (TextDisplay) objectDatabase.get("scrambleViewTextDisplay");
+            if (!newScramble.equals("")) {
+                String newCube = RubiksCubeNet.convertLetterFaceToNum(CubeScrambler.getScrambledNet(newScramble));
+                currentDatabaseScrambleView.overwriteCube(newCube);
+                scrambleTextDisplay.updateTextDisplay(newScramble);
+            }
+            else {
+                currentDatabaseScrambleView.reset();
+                scrambleTextDisplay.updateTextDisplay("NO SCRAMBLE ASSOCIATED WITH RUN");
+            }
+
+            changeWindow("Scramble View Window");
+        }
         else if (command.contains("GENERATE SCRAMBLE")) { // WORKS
-            //TODO BACKEND IMPLEMENTATION, NEED TO PASS: SCRAMBLE MOVE SEQUENCE + NET OF COMPLETED SCRAMBLE
-            String newScramble = "123411111222222222333333333444444444555555555666666666";
-            currentGenerateScrambleView.overwriteCube(newScramble);
+            String newScramble = CubeScrambler.getScramble();
+            String newCube = RubiksCubeNet.convertLetterFaceToNum(CubeScrambler.getScrambledNet(newScramble));
+            currentGenerateScrambleView.overwriteCube(newCube);
+            TextDisplay scrambleTextDisplay = (TextDisplay) objectDatabase.get("scrambleGenerateTextDisplay");
+            scrambleTextDisplay.updateTextDisplay(newScramble);
         }
         else if (command.contains("UPLOAD TIME FOR RUN")) {
             TimerButton button = (TimerButton) objectDatabase.get("timerButton");
@@ -421,7 +465,7 @@ public class Application implements ActionListener {
             changeWindow("Database Upload Window");
         }
         else if (command.contains("UPLOAD SCRAMBLE FOR RUN")) {
-            TextDisplay scramble = (TextDisplay) objectDatabase.get("scrambleTextDisplay");
+            TextDisplay scramble = (TextDisplay) objectDatabase.get("scrambleGenerateTextDisplay");
             String scrambleString = scramble.getText();
             if (scrambleString.contains("SCRAMBLE GENERATED HERE")) { // check if scrmable has been generated yet
                 displayErrorMessage("ERROR CODE 23");
