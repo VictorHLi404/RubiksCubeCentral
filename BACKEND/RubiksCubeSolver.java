@@ -1,12 +1,9 @@
 package BACKEND;
 
-import java.util.Scanner;
-
 public class RubiksCubeSolver {
     public static String findShortSolution(String scrambledCube) {
         //Find shorter solutions (try more probes even a solution has already been found)
         //In this example, we try AT LEAST 10000 phase2 probes to find shorter solutions.
-        Search.init();
         String result = new Search().solution(scrambledCube, 21, 100000000, 10000, 0);
         return result;
     }
