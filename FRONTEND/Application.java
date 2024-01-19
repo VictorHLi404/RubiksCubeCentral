@@ -213,6 +213,10 @@ public class Application implements ActionListener {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         displayHeight = screenSize.height;
         displayWidth = screenSize.width;
+        DisplayElement.setFrameSizeVertical(displayHeight);
+        DisplayElement.setFrameSizeHorizontal(displayWidth);
+        FontList.setFrameSize(displayWidth);
+        FontList.initializeFonts();
         frame.setSize(displayWidth, displayHeight);
         System.out.println(displayHeight + " " + displayWidth);
         frame.setVisible(true);//making the frame visible  

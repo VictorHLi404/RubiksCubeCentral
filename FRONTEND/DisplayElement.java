@@ -17,6 +17,7 @@ public class DisplayElement {
     public static final boolean onMac = true;
     public static int frameSizeHorizontal;
     public static int frameSizeVertical;
+
     protected JComponent component;
 
     protected String type;
@@ -48,14 +49,6 @@ public class DisplayElement {
     }
 
     public void display() {
-        if (onMac) {
-            frameSizeHorizontal = 1024;
-            frameSizeVertical = 768;
-        }
-        else {
-            frameSizeHorizontal = 1920;
-            frameSizeVertical = 1080;
-        }
         component.setBounds(resizeHorizontal(xPosition, frameSizeHorizontal), resizeVertical(yPosition, frameSizeVertical), resizeHorizontal(width, frameSizeHorizontal), resizeVertical(height, frameSizeVertical));
         component.validate();
         component.setVisible(isVisible);
@@ -138,6 +131,14 @@ public class DisplayElement {
                 System.out.println("COLOR INPUT NOT VALID");
                 return Color.GRAY;
         }
+    }
+
+    public static void setFrameSizeHorizontal(int frameSizeHorizontal) {
+        DisplayElement.frameSizeHorizontal = frameSizeHorizontal;
+    }
+
+    public static void setFrameSizeVertical(int frameSizeVertical) {
+        DisplayElement.frameSizeVertical = frameSizeVertical;
     }
 }
 
