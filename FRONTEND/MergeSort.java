@@ -2,7 +2,7 @@ package FRONTEND;
 
 public class MergeSort {
 
-    public static void mergeArrays(CubeSolve[] arr, CubeSolve[] leftArray, CubeSolve[] rightArray, String sortBy) {
+    public static void mergeArrays(SubmissionEntry[] arr, SubmissionEntry[] leftArray, SubmissionEntry[] rightArray, String sortBy) {
         
         int leftArraySize = leftArray.length;
         int rightArraySize = rightArray.length;
@@ -52,14 +52,14 @@ public class MergeSort {
         }
     }
 
-    public static void mergeSort(CubeSolve[] arr, String sortBy) {
+    public static void mergeSort(SubmissionEntry[] arr, String sortBy) {
         int arrayLength = arr.length;
         if (arrayLength <= 1) {
             return;
         }
         int partitionLength = arrayLength/2;
-        CubeSolve[] leftArray = new CubeSolve[partitionLength];
-        CubeSolve[] rightArray = new CubeSolve[arrayLength-partitionLength];
+        SubmissionEntry[] leftArray = new SubmissionEntry[partitionLength];
+        SubmissionEntry[] rightArray = new SubmissionEntry[arrayLength-partitionLength];
 
         int i = 0;
 

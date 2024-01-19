@@ -71,12 +71,9 @@ public class InputValidation {
     }
     
     public static boolean isValidMoveSequence(String string) {
-        System.out.println(string);
         String[] moveSequence = string.split(" ");
-        System.out.println("MOVE SEQUENCE " + moveSequence);
         for (int i = 0; i < moveSequence.length; i++) {
             if (!isValidMove(moveSequence[i])) {
-                System.out.println(moveSequence[i]);
                 return false;
             }
         }

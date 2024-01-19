@@ -49,8 +49,8 @@ public class DisplayElement {
 
     public void display() {
         if (onMac) {
-            frameSizeHorizontal = 1440;
-            frameSizeVertical = 900;
+            frameSizeHorizontal = 1024;
+            frameSizeVertical = 768;
         }
         else {
             frameSizeHorizontal = 1920;

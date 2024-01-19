@@ -5,21 +5,21 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 class DatabaseView {
-    protected CubeSolve[] solveList;
+    protected SubmissionEntry[] solveList;
     protected final int databaseMaxSize = 100;
     protected int solveListSize;
 
     protected String currentSortType;
 
     protected final int displayPageLength = 5;
-    protected CubeSolve[] currentPage;
+    protected SubmissionEntry[] currentPage;
     protected int currentIndex = 0;
 
     protected final int averageSampleSize = 5;
     protected String averageTime;
     
 
-    public DatabaseView(CubeSolve[] solveList) {
+    public DatabaseView(SubmissionEntry[] solveList) {
         this.solveList = solveList;
         int index = 0;
         while (index < databaseMaxSize) {
@@ -32,7 +32,7 @@ class DatabaseView {
         // default sort by time
         this.currentSortType = "TIME";
         sort();
-        currentPage = new CubeSolve[displayPageLength];
+        currentPage = new SubmissionEntry[displayPageLength];
         for (int i = 0; i < displayPageLength; i++) {
             currentPage[i] = solveList[i];
         }
@@ -86,7 +86,7 @@ class DatabaseView {
     }
 
     private void sort() {
-        CubeSolve[] sortedSolveList = new CubeSolve[solveListSize];
+        SubmissionEntry[] sortedSolveList = new SubmissionEntry[solveListSize];
         for (int i = 0; i < solveListSize; i++) {
             sortedSolveList[i] = solveList[i];
         }
@@ -103,7 +103,7 @@ class DatabaseView {
     }
 
     public void addToList(String solvetime, String date, String scramble) {
-        CubeSolve newEntry = new CubeSolve(solvetime, date, scramble);
+        SubmissionEntry newEntry = new SubmissionEntry(solvetime, date, scramble);
         solveList[solveListSize] = newEntry;
         solveListSize++;
         sort();
@@ -113,7 +113,6 @@ class DatabaseView {
 
     public void deleteFromList(int entryIndex) {
         int deleteIndex = entryIndex + currentIndex - 1;
-        System.out.println(deleteIndex);
         solveList[deleteIndex] = null;
         for (int i = deleteIndex; i < solveListSize; i++) { // shuffle elements down
             if (i < databaseMaxSize-1) {
@@ -129,7 +128,7 @@ class DatabaseView {
         updateAverageTime();
     }
 
-    public void updateAverageTime() {
+    private void updateAverageTime() {
         String tempSortType = currentSortType;
         currentSortType = "TIME";
         sort();
@@ -141,10 +140,10 @@ class DatabaseView {
                 break;
             }
             runCount++;
-            String time = solveList[i].getSolveTime();
-            sum += Integer.valueOf(time.substring(0, 2))*60000 + Integer.valueOf(time.substring(3, 5))*1000 + Integer.valueOf(time.substring(6, 9));
+            sum += solveList[i].solveTimeToInt();
+
+            // TODO TEST THIS
         }
-        System.out.println(sum);
         sum = sum / runCount;
         averageTime = TimerButton.timerMillisecondTimeFormatter(sum);
         currentSortType = tempSortType;
@@ -152,7 +151,7 @@ class DatabaseView {
         loadPage();
     }
 
-    public CubeSolve[] getSolveList() {
+    public SubmissionEntry[] getSolveList() {
         return solveList;
     }
 
@@ -183,12 +182,12 @@ class DatabaseView {
 
 }
 
-class CubeSolve {
+class SubmissionEntry {
     protected String solveTime;
     protected String date;
     protected String scramble;
 
-    public CubeSolve(String solveTime, String date, String scramble) {
+    public SubmissionEntry(String solveTime, String date, String scramble) {
         this.solveTime = solveTime;
         this.date = date;
         this.scramble = scramble;

@@ -4,7 +4,7 @@ import java.awt.Font;
 
 public class FontList {
 
-    public static final int frameSize = 1440;
+    public static final int frameSize = 1024;
     public static Font standardFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(25, frameSize));
     public static Font titleFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(80, frameSize));
     public static Font headerFont = new Font(Font.SANS_SERIF, Font.BOLD, resize(60, frameSize));

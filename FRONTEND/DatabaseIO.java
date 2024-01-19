@@ -14,17 +14,16 @@ public class DatabaseIO {
     private static FileWriter csvWriter;
     private static final int databaseMaxSize = 100;
 
-    public static CubeSolve[] loadSolves() throws IOException {
-        System.out.println(System.getProperty("user.dir"));
+    public static SubmissionEntry[] loadSolves() throws IOException {
         csvReader = new BufferedReader(new FileReader(solveFile));
-        CubeSolve[] solveList = new CubeSolve[databaseMaxSize];
+        SubmissionEntry[] solveList = new SubmissionEntry[databaseMaxSize];
         String rowData = "";
         rowData = csvReader.readLine();
         rowData = csvReader.readLine(); // buffer the first line which only contains the names of the variables
         int i = 0;
         while (rowData != null) {
             String dataArray[] = rowData.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-            solveList[i] = new CubeSolve(dataArray[0], dataArray[1], dataArray[2].replace("\"", ""));
+            solveList[i] = new SubmissionEntry(dataArray[0], dataArray[1], dataArray[2].replace("\"", ""));
             rowData = csvReader.readLine();
             i++;
         }
@@ -47,7 +46,7 @@ public class DatabaseIO {
     }
 
     public static void saveSolves(DatabaseView database) throws IOException {
-        CubeSolve[] solveList = database.getSolveList();
+        SubmissionEntry[] solveList = database.getSolveList();
         csvWriter = new FileWriter(solveFile);
         csvWriter.write("time,date,scramble\n");
         for (int i = 0; i < database.solveListSize; i++) {

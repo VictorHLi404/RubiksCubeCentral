@@ -68,7 +68,7 @@ public class Application implements ActionListener {
         windowList[1] = new Window("Solver Window", displayHeight, displayWidth);
 
         windowList[1].add(new TextDisplay("titleText", 50, 50, 100, 1025, 1, standardBackgroundColor, new String[] {"RUBIKS CUBE SOLVER"}, FontList.titleFont));
-        windowList[1].add(new TextDisplay("explanationText", 50, 160, 125, 1500, 1, standardBackgroundColor, new String[] {"Construct your current scramble by clicking on a color, and then clicking on the respective square where it is on the cube. When looking at the cube, make sure the white center piece is on top, the yellow on the bottom, the green facing you, and the orange facing the left. Ensure that the cube you construct is in a valid state, otherwise an error message will pop up and not provide a solution."}, FontList.standardFont));
+        windowList[1].add(new TextDisplay("explanationText", 50, 160, 130, 1500, 1, standardBackgroundColor, new String[] {"Construct your current scramble by clicking on a color, and then clicking on the respective square where it is on the cube. When looking at the cube, make sure the white center piece is on top, the yellow on the bottom, the green facing you, and the orange facing the left. Ensure that the cube you construct is in a valid state, or an error message will pop up. Additionally, if the cube is not completely solved after performing the sequence, put in the cube again, as it is not guaranteed to provide a solution on the first try."}, FontList.standardFont));
         
         windowList[1].add(new ColorSwatch("redColorSwatch", 50, 300, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "RED"));
         windowList[1].add(new ColorSwatch("greenColorSwatch", 360, 300, 75, 275, 1, standardBackgroundColor, this, blankString, FontList.titleFont, "GREEN"));
@@ -135,10 +135,10 @@ public class Application implements ActionListener {
         windowList[3].add(new TextDisplay("averageHeading", 1350, 500, 100, 500, 1, standardBackgroundColor, new String[] {"TIME AVERAGE"}, FontList.headerFont));
         windowList[3].add(new TextDisplay("averageTimeDisplay", 1425, 600, 100, 350, 1, standardBackgroundColor, new String[] {"00:00:000"}, FontList.headerFont)); 
 
-        windowList[3].add(new ChangeDatabasePageButton("databaseScrollBackwardsButton", 125, 880, 75, 200, 1, Color.WHITE, this, new String[] {"<-"}, FontList.titleFont, false));
-        windowList[3].add(new ChangeDatabasePageButton("databaseScrollForwardsButton", 1055, 880, 75, 200, 1, Color.WHITE, this, new String[] {"->"}, FontList.titleFont, true));
-        windowList[3].add(new ChangeDatabaseSortTypeButton("sortByTimeButton", 375, 880, 75, 300, 1, Color.WHITE, this, new String[] {"SORT BY TIME"}, FontList.standardFont, "TIME"));
-        windowList[3].add(new ChangeDatabaseSortTypeButton("sortByDateButton", 695, 880, 75, 300, 1, Color.WHITE, this, new String[] {"SORT BY DATE"}, FontList.standardFont, "DATE"));
+        windowList[3].add(new ChangeDatabasePageButton("databaseScrollBackwardsButton", 125, 900, 75, 200, 1, Color.WHITE, this, new String[] {"<-"}, FontList.titleFont, false));
+        windowList[3].add(new ChangeDatabasePageButton("databaseScrollForwardsButton", 1055, 900, 75, 200, 1, Color.WHITE, this, new String[] {"->"}, FontList.titleFont, true));
+        windowList[3].add(new ChangeDatabaseSortTypeButton("sortByTimeButton", 375, 900, 75, 300, 1, Color.WHITE, this, new String[] {"SORT BY TIME"}, FontList.standardFont, "TIME"));
+        windowList[3].add(new ChangeDatabaseSortTypeButton("sortByDateButton", 695, 900, 75, 300, 1, Color.WHITE, this, new String[] {"SORT BY DATE"}, FontList.standardFont, "DATE"));
         windowList[3].add(new WindowChangeButton("databaseGoToUpload", 1350, 800, 100, 450, 1, Color.WHITE, this, new String[] {"UPLOAD NEW RUN"}, FontList.subtitleFont, "Database Upload Window"));
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
@@ -214,6 +214,7 @@ public class Application implements ActionListener {
         displayHeight = screenSize.height;
         displayWidth = screenSize.width;
         frame.setSize(displayWidth, displayHeight);
+        System.out.println(displayHeight + " " + displayWidth);
         frame.setVisible(true);//making the frame visible  
     }
 
@@ -328,6 +329,7 @@ public class Application implements ActionListener {
 
         else if (command.contains("UPLOAD NET")) {
             String sequence = RubiksCubeSolver.findShortSolution(currentSolveScrambleBuild.toDataString());
+            System.out.println(sequence);
             TextDisplay solutionDisplayText = (TextDisplay) objectDatabase.get("solutionDisplayText");
             if (sequence.contains("ERROR CODE ")) {
                 displayErrorMessage(sequence);
@@ -417,13 +419,11 @@ public class Application implements ActionListener {
         
         else if (command.contains("LOAD SCRAMBLE VIEW ")) {
             command = command.replace("LOAD SCRAMBLE VIEW ", "");
-            System.out.println(command);
             TextDisplay slotDisplay = (TextDisplay) objectDatabase.get("slot" + command.substring(0, 1) + "DataDisplay");
             if (slotDisplay.getText().contains("ENTRY DOES NOT EXIST")) {
                 displayErrorMessage("ERROR CODE 27");
                 return;
             }
-            System.out.println("TRIGGERED");
             command = command.replace(command.substring(0, 1), "");
             command = command.replace(" WITH SCRAMBLE ", "");
             String newScramble = command;
